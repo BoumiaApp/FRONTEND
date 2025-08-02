@@ -18,16 +18,33 @@ import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import Users from "./components/Admin/Users";
+import Clients from "./components/Admin/Clients";
+import Products from "./components/Admin/Products";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
-    <>
+    <AuthProvider>
       <Router>
         <ScrollToTop />
         <Routes>
-          {/* Dashboard Layout */}
-          <Route element={<AppLayout />}>
+          {/* Auth Layout */}
+          <Route path="/auth/signin" element={<SignIn />} />
+          <Route path="/signin" element={<SignIn />} />
+
+          {/* Protected Dashboard Layout */}
+          <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
             <Route index path="/" element={<Home />} />
+            <Route path="/users" element={
+              <ProtectedRoute requiredAccessLevel={10}>
+                <Users />
+              </ProtectedRoute>
+            } />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="/products" element={<Products />} />
+            
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
@@ -53,14 +70,10 @@ export default function App() {
             <Route path="/bar-chart" element={<BarChart />} />
           </Route>
 
-          {/* Auth Layout */}
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-
           {/* Fallback Route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
-    </>
+    </AuthProvider>
   );
 }

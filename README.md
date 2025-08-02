@@ -1,192 +1,227 @@
-# TailAdmin React - Free React Tailwind Admin Dashboard Template
+# Boumia Admin Dashboard - User Management System
 
-TailAdmin is a free and open-source admin dashboard template built on **React and Tailwind CSS**, providing developers
-with everything they need to create a comprehensive, data-driven back-end,
-dashboard, or admin panel solution for upcoming web projects.
+A comprehensive React.js admin dashboard with integrated user management functionality, built with TypeScript, Tailwind CSS, and Axios for API integration.
 
-With TailAdmin, you get access to all the necessary dashboard UI components, elements, and pages required to build a
-feature-rich and complete dashboard or admin panel. Whether you're building dashboard or admin panel for a complex web
-application or a simple website, TailAdmin is the perfect solution to help you get up and running quickly.
+## 🚀 Features
 
-![TailAdmin React.js Dashboard Preview](./banner.png)
+### Authentication & Security
+- **JWT-based Authentication**: Secure login with token management
+- **Protected Routes**: Admin-only access to user management
+- **Automatic Token Validation**: Seamless session management
+- **Role-based Access Control**: Admin (Level 10) and Cashier (Level 0) roles
 
-## Overview
+### User Management
+- **Create Users**: Add new users with role assignment
+- **View All Users**: Complete user listing with search functionality
+- **Edit Users**: Update user information and roles
+- **Delete Users**: Remove users with confirmation
+- **Enable/Disable Users**: Toggle user status
+- **Search Users**: Find users by name, username, or email
+- **Real-time Updates**: Automatic refresh after operations
 
-TailAdmin provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and
-control panels. It's built on:
+### UI/UX Features
+- **Responsive Design**: Works on all screen sizes
+- **Dark Mode Support**: Complete dark theme implementation
+- **Modern UI**: Clean, professional interface
+- **Loading States**: Smooth user experience
+- **Error Handling**: Comprehensive error messages
+- **Form Validation**: Client-side validation with helpful feedback
 
-- React 19
-- TypeScript
-- Tailwind CSS
+## 🔧 Access Levels
 
-### Quick Links
+| Level | Role | Description |
+|-------|------|-------------|
+| 0 | Cashier | Basic user access |
+| 10 | Admin | Full administrative access |
 
-- [✨ Visit Website](https://tailadmin.com)
-- [📄 Documentation](https://tailadmin.com/docs)
-- [⬇️ Download](https://tailadmin.com/download)
-- [🖌️ Figma Design File (Community Edition)](https://www.figma.com/community/file/1214477970819985778)
-- [⚡ Get PRO Version](https://tailadmin.com/pricing)
+## 🛠️ Technology Stack
 
-### Demos
+- **Frontend**: React.js 18+ with TypeScript
+- **Styling**: Tailwind CSS
+- **HTTP Client**: Axios
+- **Authentication**: JWT (JSON Web Tokens)
+- **State Management**: React Context API
+- **Routing**: React Router v6
+- **Build Tool**: Vite
 
-- [Free Version](https://free-react-demo.tailadmin.com/)
-- [Pro Version](https://react-demo.tailadmin.com)
+## 📁 Project Structure
 
-### Other Versions
-
-- [HTML Version](https://github.com/TailAdmin/tailadmin-free-tailwind-dashboard-template)
-- [Next.js Version](https://github.com/TailAdmin/free-nextjs-admin-dashboard)
-- [Vue.js Version](https://github.com/TailAdmin/vue-tailwind-admin-dashboard)
-
-## Installation
-
-### Prerequisites
-
-To get started with TailAdmin, ensure you have the following prerequisites installed and set up:
-
-- Node.js 18.x or later (recommended to use Node.js 20.x or later)
-
-### Cloning the Repository
-
-Clone the repository using the following command:
-
-```bash
-git clone https://github.com/TailAdmin/free-react-tailwind-admin-dashboard.git
+```
+src/
+├── components/
+│   ├── Admin/
+│   │   └── Users.tsx              # Main user management component
+│   ├── tables/
+│   │   └── UsersTables.tsx        # User table component
+│   ├── common/                    # Shared components
+│   ├── ui/                        # UI components
+│   └── header/                    # Header components
+├── context/
+│   └── AuthContext.tsx            # Authentication context
+├── services/
+│   └── api.ts                     # API service layer
+├── types/
+│   └── user.ts                    # TypeScript interfaces
+├── pages/
+│   └── AuthPages/
+│       └── SignIn.tsx             # Login page
+└── layout/
+    └── AppSidebar.tsx             # Navigation sidebar
 ```
 
-> Windows Users: place the repository near the root of your drive if you face issues while cloning.
+## 🚀 Getting Started
 
-1. Install dependencies:
+### Prerequisites
+- Node.js 16+ 
+- npm or yarn
+- Boumia API server running on `http://localhost:8080`
 
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd free-react-tailwind-admin-dashboard
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
-   > Use the `--legacy-peer-deps` flag, if you face issues while installing.
-
-2. Start the development server:
+3. **Start the development server**
    ```bash
    npm run dev
-   # or
-   yarn dev
    ```
 
-## Components
+4. **Access the application**
+   - Open `http://localhost:5173` in your browser
+   - Login with default admin credentials:
+     - **Username**: `admin`
+     - **Password**: `admin123`
 
-TailAdmin is a pre-designed starting point for building a web-based dashboard using React.js and Tailwind CSS. The
-template includes:
+## 🔌 API Integration
 
-- Sophisticated and accessible sidebar
-- Data visualization components
-- Prebuilt profile management and 404 page
-- Tables and Charts(Line and Bar)
-- Authentication forms and input elements
-- Alerts, Dropdowns, Modals, Buttons and more
-- Can't forget Dark Mode 🕶️
+The application integrates with the Boumia API with the following endpoints:
 
-All components are built with React and styled using Tailwind CSS for easy customization.
+### Authentication Endpoints
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
+- `POST /api/auth/validate` - Validate JWT token
 
-## Feature Comparison
+### User Management Endpoints
+- `GET /api/users` - Get all users
+- `POST /api/users` - Create new user
+- `GET /api/users/{id}` - Get user by ID
+- `PUT /api/users/{id}` - Update user
+- `DELETE /api/users/{id}` - Delete user
+- `GET /api/users/search` - Search users
+- `PUT /api/users/{id}/enable` - Enable user
+- `PUT /api/users/{id}/disable` - Disable user
 
-### Free Version
+## 🔐 Security Features
 
-- 1 Unique Dashboard
-- 30+ dashboard components
-- 50+ UI elements
-- Basic Figma design files
-- Community support
+- **JWT Token Management**: Automatic token handling and refresh
+- **Route Protection**: Admin-only access to sensitive areas
+- **Input Validation**: Client and server-side validation
+- **Error Handling**: Secure error messages without data leakage
+- **CSRF Protection**: Built-in protection against CSRF attacks
 
-### Pro Version
+## 🎨 Customization
 
-- 5 Unique Dashboards: Analytics, Ecommerce, Marketing, CRM, Stocks (more coming soon)
-- 400+ dashboard components and UI elements
-- Complete Figma design file
-- Email support
+### Styling
+The application uses Tailwind CSS for styling. You can customize:
+- Colors in `tailwind.config.js`
+- Component styles in individual files
+- Dark mode preferences
 
-To learn more about pro version features and pricing, visit our [pricing page](https://tailadmin.com/pricing).
+### API Configuration
+Update the API base URL in `src/services/api.ts`:
+```typescript
+const api = axios.create({
+  baseURL: 'http://localhost:8080', // Change this to your API URL
+  // ...
+});
+```
 
-## Changelog
+### Access Levels
+Modify access levels in `src/types/user.ts`:
+```typescript
+export const ACCESS_LEVELS = {
+  CASHIER: 0,
+  ADMIN: 10,
+} as const;
+```
 
-### Version 2.0.2 - [March 25, 2025]
+## 🐛 Troubleshooting
 
-- Upgraded to React 19
-- Included overrides for packages to prevent peer dependency errors.
-- Migrated from react-flatpickr to flatpickr package for React 19 support
+### Common Issues
 
-### Version 2.0.1 - [February 27, 2025]
+1. **API Connection Error**
+   - Ensure the Boumia API server is running on port 8080
+   - Check network connectivity
+   - Verify API endpoints are accessible
 
-#### Update Overview
+2. **Authentication Issues**
+   - Clear browser localStorage
+   - Check JWT token format
+   - Verify API authentication endpoints
 
-- Upgraded to Tailwind CSS v4 for better performance and efficiency.
-- Updated class usage to match the latest syntax and features.
-- Replaced deprecated class and optimized styles.
+3. **Build Errors**
+   - Run `npm install` to ensure all dependencies are installed
+   - Check TypeScript compilation errors
+   - Verify Node.js version compatibility
 
-#### Next Steps
+### Development Tips
 
-- Run npm install or yarn install to update dependencies.
-- Check for any style changes or compatibility issues.
-- Refer to the Tailwind CSS v4 [Migration Guide](https://tailwindcss.com/docs/upgrade-guide) on this release. if needed.
-- This update keeps the project up to date with the latest Tailwind improvements. 🚀
+- Use browser developer tools to inspect network requests
+- Check the console for error messages
+- Verify API responses match expected formats
+- Test with different user roles and permissions
 
-### Version 2.0.0 - [February 2025]
+## 📝 Usage Guide
 
-A major update with comprehensive redesign and modern React patterns implementation.
+### For Administrators
 
-#### Major Improvements
+1. **Login** with admin credentials
+2. **Navigate** to "Users" in the sidebar
+3. **Create Users**:
+   - Click "Add User" button
+   - Fill in required information
+   - Select appropriate access level
+   - Save the user
 
-- Complete UI redesign with modern React patterns
-- New features: collapsible sidebar, chat, and calendar
-- Improved performance and accessibility
-- Updated data visualization using ApexCharts
+4. **Manage Users**:
+   - Search for specific users
+   - Edit user information
+   - Enable/disable users
+   - Delete users when necessary
 
-#### Key Features
+### For Cashiers
 
-- Redesigned dashboards (Ecommerce, Analytics, Marketing, CRM)
-- Enhanced navigation with React Router integration
-- Advanced tables with sorting and filtering
-- Calendar with drag-and-drop support
-- New UI components and improved existing ones
+1. **Login** with cashier credentials
+2. **Access** basic dashboard features
+3. **Note**: User management features are restricted to admin users only
 
-#### Breaking Changes
+## 🤝 Contributing
 
-- Updated sidebar component API
-- Migrated charts to ApexCharts
-- Revised authentication system
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
 
-[Read more](https://tailadmin.com/docs/update-logs/react) on this release.
+## 📄 License
 
-### Version 1.3.7 - [June 20, 2024]
+This project is licensed under the MIT License.
 
-#### Enhancements
+## 🆘 Support
 
-1. Remove Repetition of DefaultLayout in every Pages
-2. Add ClickOutside Component for reduce repeated functionality in Header Message, Notification and User Dropdowns.
+For support and questions:
+- Check the troubleshooting section
+- Review API documentation
+- Contact the development team
 
-### Version 1.3.6 - [Jan 31, 2024]
+---
 
-#### Enhancements
-
-1. Integrate flatpickr in [Date Picker/Form Elements]
-2. Change color after select an option [Select Element/Form Elements].
-3. Make it functional [Multiselect Dropdown/Form Elements].
-4. Make best value editable [Pricing Table One/Pricing Table].
-5. Rearrange Folder structure.
-
-### Version 1.2.0 - [Apr 28, 2023]
-
-- Add Typescript in TailAdmin React.
-
-### Version 1.0.0 - Initial Release - [Mar 13, 2023]
-
-- Initial release of TailAdmin React.
-
-## License
-
-TailAdmin React.js Free Version is released under the MIT License.
-
-## Support
-
-If you find this project helpful, please consider giving it a star on GitHub. Your support helps us continue developing
-and maintaining this template.
+**Built with ❤️ for Boumia Admin Dashboard**

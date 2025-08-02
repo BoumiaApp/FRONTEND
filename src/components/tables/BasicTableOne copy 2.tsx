@@ -4,9 +4,9 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-} from "../../ui/table";
+} from "../ui/table";
 
-import Badge from "../../ui/badge/Badge";
+import Badge from "../ui/badge/Badge";
 
 interface Order {
   id: number;
@@ -127,13 +127,13 @@ export default function BasicTableOne() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Project Name
+                Role{" "}
               </TableCell>
               <TableCell
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Team
+                Location{" "}
               </TableCell>
               <TableCell
                 isHeader
