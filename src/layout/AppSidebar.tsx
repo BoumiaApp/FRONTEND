@@ -21,14 +21,20 @@ const navItems = [
     adminOnly: true, // Only show for admin users
   },
   {
-    icon: <GridIcon />,
-    name: "Clients",
-    path: "/clients",
-  },
-  {
     icon: <BoxIcon />,
     name: "Products",
     path: "/products",
+  },
+  {
+    icon: <BoxIcon />,
+    name: "Product Groups",
+    path: "/product-groups",
+    adminOnly: true, // Only show for admin users
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Clients",
+    path: "/clients",
   },
 ];
 

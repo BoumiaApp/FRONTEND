@@ -79,10 +79,10 @@ src/
 ### Installation
 
 1. **Clone the repository**
-   ```bash
+```bash
    git clone <repository-url>
    cd free-react-tailwind-admin-dashboard
-   ```
+```
 
 2. **Install dependencies**
    ```bash

@@ -75,31 +75,31 @@ export default function BasicTableOne({ users, loading, onDeleteUser, onToggleUs
 
   return (
     <>
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/[0.05] dark:bg-white/[0.02]">
-        <div className="max-w-full overflow-x-auto">
-          <Table className="min-w-[600px]">
-            <TableHeader className="bg-gray-50 dark:bg-white/[0.04] border-b border-gray-100 dark:border-white/[0.05]">
-              <TableRow>
+    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/[0.05] dark:bg-white/[0.02]">
+      <div className="max-w-full overflow-x-auto">
+        <Table className="min-w-[600px]">
+          <TableHeader className="bg-gray-50 dark:bg-white/[0.04] border-b border-gray-100 dark:border-white/[0.05]">
+            <TableRow>
                 {["User", "Email", "Access Level", "Status"].map((header) => (
-                  <TableCell
-                    key={header}
-                    isHeader
-                    className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
-                  >
-                    {header}
-                  </TableCell>
-                ))}
                 <TableCell
-                  key={"Actions"}
+                  key={header}
                   isHeader
-                  className="px-5 py-3 font-semibold text-gray-600 text-center text-sm uppercase tracking-wide dark:text-gray-300"
+                  className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Actions
+                  {header}
                 </TableCell>
-              </TableRow>
-            </TableHeader>
+              ))}
+              <TableCell
+                key={"Actions"}
+                isHeader
+                className="px-5 py-3 font-semibold text-gray-600 text-center text-sm uppercase tracking-wide dark:text-gray-300"
+              >
+                  Actions
+              </TableCell>
+            </TableRow>
+          </TableHeader>
 
-            <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+          <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
               {users.length === 0 ? (
                 <TableRow>
                   <TableCell className="px-5 py-12 text-center text-gray-500 dark:text-gray-400">
@@ -114,27 +114,27 @@ export default function BasicTableOne({ users, loading, onDeleteUser, onToggleUs
                 </TableRow>
               ) : (
                 users.map((user) => (
-                  <TableRow
+              <TableRow
                     key={user.id}
                     className="hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors"
-                  >
-                    <TableCell className="px-5 py-4 text-left">
-                      <div className="flex items-center gap-3">
+              >
+                <TableCell className="px-5 py-4 text-left">
+                  <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
                           {user.firstName.charAt(0)}{user.lastName.charAt(0)}
                         </div>
-                        <div>
-                          <p className="font-medium text-gray-800 dark:text-white">
+                    <div>
+                      <p className="font-medium text-gray-800 dark:text-white">
                             {user.firstName} {user.lastName}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
                             @{user.username}
-                          </p>
-                        </div>
-                      </div>
-                    </TableCell>
+                      </p>
+                    </div>
+                  </div>
+                </TableCell>
 
-                    <TableCell className="px-5 py-4 text-left text-sm text-gray-600 dark:text-gray-300">
+                <TableCell className="px-5 py-4 text-left text-sm text-gray-600 dark:text-gray-300">
                       <a href={`mailto:${user.email}`} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                         {user.email}
                       </a>
@@ -150,25 +150,25 @@ export default function BasicTableOne({ users, loading, onDeleteUser, onToggleUs
                       }`}>
                         {ACCESS_LEVEL_LABELS[user.accessLevel as keyof typeof ACCESS_LEVEL_LABELS] || `Level ${user.accessLevel}`}
                       </span>
-                    </TableCell>
+                </TableCell>
 
-                    <TableCell className="px-5 py-4 text-left">
-                      <Badge
-                        size="sm"
+                <TableCell className="px-5 py-4 text-left">
+                  <Badge
+                    size="sm"
                         color={user.isEnabled ? "success" : "error"}
                       >
                         {user.isEnabled ? "Active" : "Disabled"}
-                      </Badge>
-                    </TableCell>
+                  </Badge>
+                </TableCell>
 
-                    <TableCell className="px-5 py-4 flex gap-2 justify-center">
-                      <Button
-                        variant="outline"
-                        size="sm"
+                <TableCell className="px-5 py-4 flex gap-2 justify-center">
+                  <Button
+                    variant="outline"
+                    size="sm"
                         className="flex items-center gap-1 hover:bg-blue-50 dark:hover:bg-blue-900/20"
                         onClick={() => handleEditUser(user)}
-                      >
-                        <BoxIcon className="size-4" />
+                  >
+                    <BoxIcon className="size-4" />
                         Edit
                       </Button>
                       <Button
@@ -182,24 +182,24 @@ export default function BasicTableOne({ users, loading, onDeleteUser, onToggleUs
                         onClick={() => onToggleUserStatus(user.id, user.isEnabled)}
                       >
                         {user.isEnabled ? 'Disable' : 'Enable'}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
                         className="flex items-center gap-1 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
                         onClick={() => onDeleteUser(user.id)}
-                      >
-                        <BoxIcon className="size-4" />
+                  >
+                    <BoxIcon className="size-4" />
                         Delete
-                      </Button>
-                    </TableCell>
-                  </TableRow>
+                  </Button>
+                </TableCell>
+              </TableRow>
                 ))
               )}
-            </TableBody>
-          </Table>
-        </div>
+          </TableBody>
+        </Table>
       </div>
+    </div>
 
       {/* Edit User Modal */}
       {editingUser && (

@@ -21,6 +21,7 @@ import Home from "./pages/Dashboard/Home";
 import Users from "./components/Admin/Users";
 import Clients from "./components/Admin/Clients";
 import Products from "./components/Admin/Products";
+import ProductGroups from "./components/Admin/ProductGroups";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -44,6 +45,11 @@ export default function App() {
             } />
             <Route path="/clients" element={<Clients />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/product-groups" element={
+              <ProtectedRoute requiredAccessLevel={10}>
+                <ProductGroups />
+              </ProtectedRoute>
+            } />
             
 
             {/* Others Page */}
