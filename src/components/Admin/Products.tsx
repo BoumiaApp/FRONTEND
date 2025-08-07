@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import PageBreadcrumb from "../common/PageBreadCrumb";
 import ComponentCard from "../common/ComponentCard";
 import PageMeta from "../common/PageMeta";
@@ -6,7 +6,12 @@ import ProductsTable from "../tables/ProductsTable";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
 import { productAPI, productGroupAPI } from "../../services/api";
-import { Product, CreateProductRequest, MEASUREMENT_UNITS, PRODUCT_COLORS } from "../../types/product";
+import {
+  Product,
+  CreateProductRequest,
+  MEASUREMENT_UNITS,
+  PRODUCT_COLORS,
+} from "../../types/product";
 import { ProductGroup } from "../../types/productGroup";
 
 export default function Products() {
@@ -14,23 +19,25 @@ export default function Products() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [productGroups, setProductGroups] = useState<ProductGroup[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchType, setSearchType] = useState<'general' | 'code' | 'plu' | 'name'>('general');
-  const [filterType, setFilterType] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchType, setSearchType] = useState<
+    "general" | "code" | "plu" | "name" | "barcode"
+  >("general");
+  const [filterType, setFilterType] = useState<string>("all");
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
-  const [selectedUnit, setSelectedUnit] = useState<string>('');
-  const [priceRange, setPriceRange] = useState({ min: '', max: '' });
-  const [costRange, setCostRange] = useState({ min: '', max: '' });
-  const [selectedColor, setSelectedColor] = useState<string>('');
-  const [rankRange, setRankRange] = useState({ min: '', max: '' });
+  const [selectedUnit, setSelectedUnit] = useState<string>("");
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
+  const [costRange, setCostRange] = useState({ min: "", max: "" });
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [rankRange, setRankRange] = useState({ min: "", max: "" });
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createFormData, setCreateFormData] = useState<CreateProductRequest>({
-    code: '',
-    plu: '',
-    name: '',
-    description: '',
+    code: "",
+    plu: "",
+    name: "",
+    description: "",
     productGroupId: undefined,
-    measurementUnit: '',
+    measurementUnit: "",
     price: 0,
     cost: 0,
     isEnabled: true,
@@ -38,13 +45,13 @@ export default function Products() {
     isPriceChangeAllowed: true,
     isTaxInclusive: false,
     usesDefaultQuantity: false,
-    color: '',
+    color: "",
     ageRestriction: undefined,
     rank: 0,
-    barcode: ''
+    barcode: "",
   });
   const [createLoading, setCreateLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchProducts();
@@ -66,8 +73,8 @@ export default function Products() {
       setProducts(response.data);
       setAllProducts(response.data);
     } catch (error) {
-      console.error('Error fetching products:', error);
-      setError('Failed to fetch products');
+      console.error("Error fetching products:", error);
+      setError("Failed to fetch products");
     } finally {
       setLoading(false);
     }
@@ -78,7 +85,7 @@ export default function Products() {
       const response = await productGroupAPI.getAllProductGroups();
       setProductGroups(response.data);
     } catch (error) {
-      console.error('Error fetching product groups:', error);
+      console.error("Error fetching product groups:", error);
     }
   };
 
@@ -91,18 +98,22 @@ export default function Products() {
     try {
       setLoading(true);
       let response;
-      
+
       switch (searchType) {
-        case 'code':
+        case "code":
           response = await productAPI.getProductByCode(searchTerm);
           setProducts([response.data]);
           break;
-        case 'plu':
+        case "plu":
           response = await productAPI.getProductByPLU(searchTerm);
           setProducts([response.data]);
           break;
-        case 'name':
+        case "name":
           response = await productAPI.getProductByName(searchTerm);
+          setProducts([response.data]);
+          break;
+        case "barcode":
+          response = await productAPI.getProductByBarcode(searchTerm);
           setProducts([response.data]);
           break;
         default:
@@ -111,7 +122,7 @@ export default function Products() {
           break;
       }
     } catch (error) {
-      console.error('Error searching products:', error);
+      console.error("Error searching products:", error);
       setProducts([]);
     } finally {
       setLoading(false);
@@ -124,65 +135,76 @@ export default function Products() {
       let response;
 
       switch (filterType) {
-        case 'enabled':
+        case "enabled":
           response = await productAPI.getEnabledProducts();
           break;
-        case 'disabled':
+        case "disabled":
           response = await productAPI.getDisabledProducts();
           break;
-        case 'services':
+        case "services":
           response = await productAPI.getServiceProducts();
           break;
-        case 'non-services':
+        case "non-services":
           response = await productAPI.getNonServiceProducts();
           break;
-        case 'price-change-allowed':
+        case "price-change-allowed":
           response = await productAPI.getPriceChangeAllowedProducts();
           break;
-        case 'tax-inclusive':
+        case "tax-inclusive":
           response = await productAPI.getTaxInclusiveProducts();
           break;
-        case 'default-quantity':
+        case "default-quantity":
           response = await productAPI.getDefaultQuantityProducts();
           break;
-        case 'by-group':
+        case "by-group":
           if (selectedGroup) {
             response = await productAPI.getProductsByGroup(selectedGroup);
           } else {
             response = await productAPI.getAllProducts();
           }
           break;
-        case 'by-unit':
+        case "by-unit":
           if (selectedUnit) {
-            response = await productAPI.getProductsByMeasurementUnit(selectedUnit);
+            response = await productAPI.getProductsByMeasurementUnit(
+              selectedUnit
+            );
           } else {
             response = await productAPI.getAllProducts();
           }
           break;
-        case 'by-color':
+        case "by-color":
           if (selectedColor) {
             response = await productAPI.getProductsByColor(selectedColor);
           } else {
             response = await productAPI.getAllProducts();
           }
           break;
-        case 'by-age-restriction':
+        case "by-age-restriction":
           if (rankRange.min && rankRange.max) {
-            response = await productAPI.getProductsByRankRange(parseInt(rankRange.min), parseInt(rankRange.max));
+            response = await productAPI.getProductsByRankRange(
+              parseInt(rankRange.min),
+              parseInt(rankRange.max)
+            );
           } else {
             response = await productAPI.getAllProducts();
           }
           break;
-        case 'by-price-range':
+        case "by-price-range":
           if (priceRange.min && priceRange.max) {
-            response = await productAPI.getProductsByPriceRange(parseFloat(priceRange.min), parseFloat(priceRange.max));
+            response = await productAPI.getProductsByPriceRange(
+              parseFloat(priceRange.min),
+              parseFloat(priceRange.max)
+            );
           } else {
             response = await productAPI.getAllProducts();
           }
           break;
-        case 'by-cost-range':
+        case "by-cost-range":
           if (costRange.min && costRange.max) {
-            response = await productAPI.getProductsByCostRange(parseFloat(costRange.min), parseFloat(costRange.max));
+            response = await productAPI.getProductsByCostRange(
+              parseFloat(costRange.min),
+              parseFloat(costRange.max)
+            );
           } else {
             response = await productAPI.getAllProducts();
           }
@@ -194,8 +216,8 @@ export default function Products() {
 
       setProducts(response.data);
     } catch (error) {
-      console.error('Error applying filter:', error);
-      setError('Failed to apply filter');
+      console.error("Error applying filter:", error);
+      setError("Failed to apply filter");
     } finally {
       setLoading(false);
     }
@@ -203,25 +225,25 @@ export default function Products() {
 
   const handleCreateProduct = async () => {
     if (!createFormData.name) {
-      setError('Name is required field');
+      setError("Name is required field");
       return;
     }
 
     try {
       setCreateLoading(true);
-      setError('');
-      
+      setError("");
+
       const response = await productAPI.createProduct(createFormData);
       setProducts([...products, response.data]);
       setAllProducts([...allProducts, response.data]);
       setShowCreateModal(false);
       setCreateFormData({
-        code: '',
-        plu: '',
-        name: '',
-        description: '',
+        code: "",
+        plu: "",
+        name: "",
+        description: "",
         productGroupId: undefined,
-        measurementUnit: '',
+        measurementUnit: "",
         price: 0,
         cost: 0,
         isEnabled: true,
@@ -229,57 +251,60 @@ export default function Products() {
         isPriceChangeAllowed: true,
         isTaxInclusive: false,
         usesDefaultQuantity: false,
-        color: '',
+        color: "",
         ageRestriction: undefined,
         rank: 0,
-        barcode: ''
+        barcode: "",
       });
     } catch (error: any) {
-      console.error('Error creating product:', error);
-      setError(error.response?.data?.message || 'Failed to create product');
+      console.error("Error creating product:", error);
+      setError(error.response?.data?.message || "Failed to create product");
     } finally {
       setCreateLoading(false);
     }
   };
 
   const handleDeleteProduct = async (productId: number) => {
-    if (!window.confirm('Are you sure you want to delete this product?')) {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
       return;
     }
 
     try {
       await productAPI.deleteProduct(productId);
-      setProducts(products.filter(product => product.id !== productId));
-      setAllProducts(allProducts.filter(product => product.id !== productId));
+      setProducts(products.filter((product) => product.id !== productId));
+      setAllProducts(allProducts.filter((product) => product.id !== productId));
     } catch (error) {
-      console.error('Error deleting product:', error);
-      setError('Failed to delete product');
+      console.error("Error deleting product:", error);
+      setError("Failed to delete product");
     }
   };
 
-  const handleToggleProductStatus = async (productId: number, currentStatus: boolean) => {
+  const handleToggleProductStatus = async (
+    productId: number,
+    currentStatus: boolean
+  ) => {
     try {
       if (currentStatus) {
         await productAPI.disableProduct(productId);
       } else {
         await productAPI.enableProduct(productId);
       }
-      
-      const updatedProducts = products.map(product => 
-        product.id === productId 
+
+      const updatedProducts = products.map((product) =>
+        product.id === productId
           ? { ...product, isEnabled: !currentStatus }
           : product
       );
       setProducts(updatedProducts);
       setAllProducts(updatedProducts);
     } catch (error) {
-      console.error('Error toggling product status:', error);
-      setError('Failed to update product status');
+      console.error("Error toggling product status:", error);
+      setError("Failed to update product status");
     }
   };
 
   const handleUpdateProduct = (productId: number, updatedProduct: Product) => {
-    const updatedProducts = products.map(product => 
+    const updatedProducts = products.map((product) =>
       product.id === productId ? updatedProduct : product
     );
     setProducts(updatedProducts);
@@ -314,6 +339,7 @@ export default function Products() {
                 <option value="code">Code</option>
                 <option value="plu">PLU</option>
                 <option value="name">Name</option>
+                <option value="barcode">Barcode</option>
               </select>
             </div>
 
@@ -338,33 +364,41 @@ export default function Products() {
               <option value="by-cost-range">By Cost Range</option>
             </select>
 
-            {filterType === 'by-group' && (
+            {filterType === "by-group" && (
               <select
-                value={selectedGroup || ''}
-                onChange={(e) => setSelectedGroup(e.target.value ? parseInt(e.target.value) : null)}
+                value={selectedGroup || ""}
+                onChange={(e) =>
+                  setSelectedGroup(
+                    e.target.value ? parseInt(e.target.value) : null
+                  )
+                }
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400"
               >
                 <option value="">Select Group</option>
-                {productGroups.map(group => (
-                  <option key={group.id} value={group.id}>{group.name}</option>
+                {productGroups.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
                 ))}
               </select>
             )}
 
-            {filterType === 'by-unit' && (
+            {filterType === "by-unit" && (
               <select
                 value={selectedUnit}
                 onChange={(e) => setSelectedUnit(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400"
               >
                 <option value="">Select Unit</option>
-                {Object.values(MEASUREMENT_UNITS).map(unit => (
-                  <option key={unit} value={unit}>{unit}</option>
+                {Object.values(MEASUREMENT_UNITS).map((unit) => (
+                  <option key={unit} value={unit}>
+                    {unit}
+                  </option>
                 ))}
               </select>
             )}
 
-            {filterType === 'by-color' && (
+            {filterType === "by-color" && (
               <select
                 value={selectedColor}
                 onChange={(e) => setSelectedColor(e.target.value)}
@@ -372,21 +406,31 @@ export default function Products() {
               >
                 <option value="">Select Color</option>
                 {Object.values(PRODUCT_COLORS).map((color) => (
-                  <option key={color} value={color}>{color}</option>
+                  <option key={color} value={color}>
+                    {color}
+                  </option>
                 ))}
               </select>
             )}
 
-            {(filterType === 'by-age-restriction' || filterType === 'by-price-range' || filterType === 'by-cost-range') && (
+            {(filterType === "by-age-restriction" ||
+              filterType === "by-price-range" ||
+              filterType === "by-cost-range") && (
               <div className="flex items-center gap-2">
                 <input
                   type="number"
                   placeholder="Min"
-                  value={filterType === 'by-age-restriction' ? rankRange.min : filterType === 'by-price-range' ? priceRange.min : costRange.min}
+                  value={
+                    filterType === "by-age-restriction"
+                      ? rankRange.min
+                      : filterType === "by-price-range"
+                      ? priceRange.min
+                      : costRange.min
+                  }
                   onChange={(e) => {
-                    if (filterType === 'by-age-restriction') {
+                    if (filterType === "by-age-restriction") {
                       setRankRange({ ...rankRange, min: e.target.value });
-                    } else if (filterType === 'by-price-range') {
+                    } else if (filterType === "by-price-range") {
                       setPriceRange({ ...priceRange, min: e.target.value });
                     } else {
                       setCostRange({ ...costRange, min: e.target.value });
@@ -398,11 +442,17 @@ export default function Products() {
                 <input
                   type="number"
                   placeholder="Max"
-                  value={filterType === 'by-age-restriction' ? rankRange.max : filterType === 'by-price-range' ? priceRange.max : costRange.max}
+                  value={
+                    filterType === "by-age-restriction"
+                      ? rankRange.max
+                      : filterType === "by-price-range"
+                      ? priceRange.max
+                      : costRange.max
+                  }
                   onChange={(e) => {
-                    if (filterType === 'by-age-restriction') {
+                    if (filterType === "by-age-restriction") {
                       setRankRange({ ...rankRange, max: e.target.value });
-                    } else if (filterType === 'by-price-range') {
+                    } else if (filterType === "by-price-range") {
                       setPriceRange({ ...priceRange, max: e.target.value });
                     } else {
                       setCostRange({ ...costRange, max: e.target.value });
@@ -439,7 +489,7 @@ export default function Products() {
             </div>
           )}
 
-          <ProductsTable 
+          <ProductsTable
             products={products}
             loading={loading}
             onDeleteProduct={handleDeleteProduct}
@@ -454,7 +504,9 @@ export default function Products() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Create New Product</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Create New Product
+              </h2>
               <button
                 onClick={() => setShowCreateModal(false)}
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
@@ -465,33 +517,54 @@ export default function Products() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Code</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Code
+                </label>
                 <input
                   type="text"
                   value={createFormData.code}
-                  onChange={(e) => setCreateFormData({...createFormData, code: e.target.value})}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      code: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="Product code"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Barcode</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Barcode
+                </label>
                 <input
                   type="text"
-                  value={createFormData.barcode || ''}
-                  onChange={(e) => setCreateFormData({ ...createFormData, barcode: e.target.value })}
+                  value={createFormData.barcode || ""}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      barcode: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="Enter barcode"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Name *
+                </label>
                 <input
                   type="text"
                   value={createFormData.name}
-                  onChange={(e) => setCreateFormData({...createFormData, name: e.target.value})}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      name: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="Product name"
                   required
@@ -499,10 +572,17 @@ export default function Products() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Description
+                </label>
                 <textarea
                   value={createFormData.description}
-                  onChange={(e) => setCreateFormData({...createFormData, description: e.target.value})}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      description: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="Product description"
                   rows={3}
@@ -510,26 +590,44 @@ export default function Products() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product Group</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Product Group
+                </label>
                 <select
-                  value={createFormData.productGroupId || ''}
-                  onChange={(e) => setCreateFormData({...createFormData, productGroupId: e.target.value ? parseInt(e.target.value) : undefined})}
+                  value={createFormData.productGroupId || ""}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      productGroupId: e.target.value
+                        ? parseInt(e.target.value)
+                        : undefined,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                 >
                   <option value="">Select Group</option>
-                  {productGroups.map(group => (
-                    <option key={group.id} value={group.id}>{group.name}</option>
+                  {productGroups.map((group) => (
+                    <option key={group.id} value={group.id}>
+                      {group.name}
+                    </option>
                   ))}
                 </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price *</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Price *
+                </label>
                 <input
                   type="number"
                   step="0.01"
                   value={createFormData.price}
-                  onChange={(e) => setCreateFormData({...createFormData, price: parseFloat(e.target.value) || 0})}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      price: parseFloat(e.target.value) || 0,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="0.00"
                   required
@@ -537,23 +635,39 @@ export default function Products() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Cost</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Cost
+                </label>
                 <input
                   type="number"
                   step="0.01"
                   value={createFormData.cost}
-                  onChange={(e) => setCreateFormData({...createFormData, cost: parseFloat(e.target.value) || 0})}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      cost: parseFloat(e.target.value) || 0,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="0.00"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rank</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Rank
+                </label>
                 <input
                   type="number"
-                  value={createFormData.rank || ''}
-                  onChange={(e) => setCreateFormData({ ...createFormData, rank: e.target.value ? parseInt(e.target.value) : undefined })}
+                  value={createFormData.rank || ""}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      rank: e.target.value
+                        ? parseInt(e.target.value)
+                        : undefined,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   placeholder="Rank"
                 />
@@ -565,50 +679,85 @@ export default function Products() {
                     <input
                       type="checkbox"
                       checked={createFormData.isEnabled}
-                      onChange={(e) => setCreateFormData({...createFormData, isEnabled: e.target.checked})}
+                      onChange={(e) =>
+                        setCreateFormData({
+                          ...createFormData,
+                          isEnabled: e.target.checked,
+                        })
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Enabled</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Enabled
+                    </span>
                   </label>
 
                   <label className="flex items-center">
                     <input
                       type="checkbox"
                       checked={createFormData.isService}
-                      onChange={(e) => setCreateFormData({...createFormData, isService: e.target.checked})}
+                      onChange={(e) =>
+                        setCreateFormData({
+                          ...createFormData,
+                          isService: e.target.checked,
+                        })
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Service</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Service
+                    </span>
                   </label>
 
                   <label className="flex items-center">
                     <input
                       type="checkbox"
                       checked={createFormData.isPriceChangeAllowed}
-                      onChange={(e) => setCreateFormData({...createFormData, isPriceChangeAllowed: e.target.checked})}
+                      onChange={(e) =>
+                        setCreateFormData({
+                          ...createFormData,
+                          isPriceChangeAllowed: e.target.checked,
+                        })
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Price Change Allowed</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Price Change Allowed
+                    </span>
                   </label>
 
                   <label className="flex items-center">
                     <input
                       type="checkbox"
                       checked={createFormData.isTaxInclusive}
-                      onChange={(e) => setCreateFormData({...createFormData, isTaxInclusive: e.target.checked})}
+                      onChange={(e) =>
+                        setCreateFormData({
+                          ...createFormData,
+                          isTaxInclusive: e.target.checked,
+                        })
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Tax Inclusive</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Tax Inclusive
+                    </span>
                   </label>
 
                   <label className="flex items-center">
                     <input
                       type="checkbox"
                       checked={createFormData.usesDefaultQuantity}
-                      onChange={(e) => setCreateFormData({...createFormData, usesDefaultQuantity: e.target.checked})}
+                      onChange={(e) =>
+                        setCreateFormData({
+                          ...createFormData,
+                          usesDefaultQuantity: e.target.checked,
+                        })
+                      }
                       className="mr-2"
                     />
-                    <span className="text-sm text-gray-700 dark:text-gray-300">Uses Default Quantity</span>
+                    <span className="text-sm text-gray-700 dark:text-gray-300">
+                      Uses Default Quantity
+                    </span>
                   </label>
                 </div>
               </div>
@@ -627,7 +776,7 @@ export default function Products() {
                 onClick={handleCreateProduct}
                 disabled={createLoading}
               >
-                {createLoading ? 'Creating...' : 'Create Product'}
+                {createLoading ? "Creating..." : "Create Product"}
               </Button>
             </div>
           </div>

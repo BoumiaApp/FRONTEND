@@ -148,7 +148,7 @@ export const productAPI = {
   getProductByCode: (code: string) => api.get(`/api/products/code/${encodeURIComponent(code)}`),
   getProductByPLU: (plu: string) => api.get(`/api/products/plu/${encodeURIComponent(plu)}`),
   getProductByName: (name: string) => api.get(`/api/products/name/${encodeURIComponent(name)}`),
-  
+  getProductByBarcode: (barcode: string) => api.get(`/api/barcode/by-barcode/${encodeURIComponent(barcode)}`),
   // Search Operations
   searchProductsGeneral: (searchTerm: string) => api.get(`/api/products/search/general?searchTerm=${encodeURIComponent(searchTerm)}`),
   
