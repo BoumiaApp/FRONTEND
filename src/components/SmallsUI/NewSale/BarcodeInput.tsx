@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Label from "../../form/Label";
 import Input from "../../form/input/InputField";
 import ComponentCard from "../../common/ComponentCard";
 import { productAPI } from "../../../services/productApi";
+import { Product } from "../../../types/product";
 
 export default function BarcodeInput({
   setProducts,
@@ -12,38 +13,59 @@ export default function BarcodeInput({
   const [searchItem, setSearchItem] = useState("");
   const [error, setError] = useState(false);
 
+  // Fetch all products on component mount
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        const response = (await productAPI.getAllProducts()).data;
+        setProducts(response.splice(0, 12)); // Limit to first 10 products
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+        setError(true);
+      }
+    };
+
+    fetchAllProducts();
+  }, []);
+
   const handleSearchItemChange = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const value = e.target.value;
     setSearchItem(value);
-    let response = await productAPI.searchProductsGeneral(value);
-    console.log(response.data);
-    if (response.data.length <= 0) {
-      setError(true);
+
+    let response: Product[] = [];
+    if (value === "") {
+      response = (await productAPI.getAllProducts()).data;
+      setProducts(response.splice(0, 12)); // Limit to first 10 products
     } else {
-      setError(false);
+      response = (await productAPI.searchProductsGeneral(value)).data;
+      console.log(response);
+      if (response.length <= 0) {
+        setError(true);
+      } else {
+        setError(false);
+      }
+      setProducts(response.splice(0, 12)); // Limit to first 10 products  
     }
-    setProducts(response.data);
   };
 
   return (
     <ComponentCard
-      title="Input States"
-      desc="Validation styles for error, success and disabled states on form controls."
+      title="Search Products"
     >
       <div className="space-y-5 sm:space-y-6">
         {/* Error Input */}
         <div>
-          <Label>Email</Label>
+          <Label>Search Products</Label>
           <Input
-            type="email"
+            type="text"
             value={searchItem}
             error={error}
             success={!error}
             onChange={handleSearchItemChange}
             placeholder="Enter your Query"
-            hint={error ? "There is no product with this serach value" : ""}
+            hint={error ? "There is no product with this search value" : ""}
           />
         </div>
       </div>
