@@ -11,7 +11,7 @@ import Badge from "../ui/badge/Badge";
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
 import { ProductGroup, UpdateProductGroupRequest, PRODUCT_GROUP_COLOR_LABELS } from "../../types/productGroup";
-import { productGroupAPI } from "../../services/api";
+import { productGroupAPI } from "../../services/productGroupApi";
 
 interface ProductGroupsTableProps {
   productGroups: ProductGroup[];

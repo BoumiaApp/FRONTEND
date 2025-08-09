@@ -5,7 +5,8 @@ import PageMeta from "../common/PageMeta";
 import ProductsTable from "../tables/ProductsTable";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
-import { productAPI, productGroupAPI } from "../../services/api";
+import { productAPI } from "../../services/productApi";
+import { productGroupAPI } from "../../services/productGroupApi";
 import {
   Product,
   CreateProductRequest,

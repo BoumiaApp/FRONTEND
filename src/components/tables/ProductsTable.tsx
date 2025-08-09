@@ -3,8 +3,10 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "../ui/table"
 import Badge from "../ui/badge/Badge";
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
-import { Product, UpdateProductRequest, MEASUREMENT_UNITS, PRODUCT_COLORS } from "../../types/product";
-import { productAPI, productGroupAPI } from "../../services/api";
+import { Product, UpdateProductRequest } from "../../types/product";
+import { productAPI } from "../../services/productApi";
+import { productGroupAPI } from "../../services/productGroupApi";
+
 import { ProductGroup } from "../../types/productGroup";
 
 interface ProductsTableProps {

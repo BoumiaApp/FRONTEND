@@ -5,7 +5,7 @@ import PageMeta from "../common/PageMeta";
 import ProductGroupsTable from "../tables/ProductGroupsTable";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
-import { productGroupAPI } from "../../services/api";
+import { productGroupAPI } from "../../services/productGroupApi";
 import { ProductGroup, CreateProductGroupRequest, PRODUCT_GROUP_COLORS, PRODUCT_GROUP_COLOR_LABELS } from "../../types/productGroup";
 
 export default function ProductGroups() {

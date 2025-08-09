@@ -36,6 +36,11 @@ const navItems = [
     name: "Clients",
     path: "/clients",
   },
+  {
+    icon: <UserCircleIcon />,
+    name: "Warehouses",
+    path: "/warehouses",
+  },
 ];
 
 export default function AppSidebar() {

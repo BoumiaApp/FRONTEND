@@ -11,7 +11,7 @@ import Badge from "../ui/badge/Badge";
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
 import { Customer, UpdateCustomerRequest, CUSTOMER_TYPE_LABELS } from "../../types/customer";
-import { customerAPI } from "../../services/api";
+import { customerAPI } from "../../services/customerApi";
 
 interface CustomersTableProps {
   customers: Customer[];

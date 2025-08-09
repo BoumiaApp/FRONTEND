@@ -11,7 +11,7 @@ import Badge from "../ui/badge/Badge";
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
 import { User, ACCESS_LEVEL_LABELS } from "../../types/user";
-import { userAPI } from "../../services/api";
+import { userAPI } from "../../services/userApi";
 
 interface UsersTablesProps {
   users: User[];
@@ -20,7 +20,7 @@ interface UsersTablesProps {
   onToggleUserStatus: (userId: number, currentStatus: boolean) => Promise<void>;
 }
 
-export default function BasicTableOne({ users, loading, onDeleteUser, onToggleUserStatus }: UsersTablesProps) {
+export default function UsersTable({ users, loading, onDeleteUser, onToggleUserStatus }: UsersTablesProps) {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [editFormData, setEditFormData] = useState({
     firstName: '',

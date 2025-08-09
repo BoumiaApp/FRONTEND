@@ -5,7 +5,7 @@ import PageMeta from "../common/PageMeta";
 import CustomersTable from "../tables/CustomersTable";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
-import { customerAPI } from "../../services/api";
+import { customerAPI } from "../../services/customerApi";
 import { Customer, CreateCustomerRequest, CUSTOMER_TYPE_LABELS } from "../../types/customer";
 
 export default function Clients() {

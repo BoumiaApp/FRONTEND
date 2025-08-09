@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import SignIn from "./pages/AuthPages/SignIn";
-import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
 import UserProfiles from "./pages/UserProfiles";
 import Videos from "./pages/UiElements/Videos";
@@ -24,6 +23,7 @@ import Products from "./components/Admin/Products";
 import ProductGroups from "./components/Admin/ProductGroups";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Warehouse from "./components/Admin/Warehouses";
 
 export default function App() {
   return (
@@ -50,7 +50,8 @@ export default function App() {
                 <ProductGroups />
               </ProtectedRoute>
             } />
-            
+            <Route path="/warehouses" element={<Warehouse />} />
+
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />
