@@ -24,6 +24,7 @@ import ProductGroups from "./components/Admin/ProductGroups";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Warehouse from "./components/Admin/Warehouses";
+import NewSale from "./components/Admin/NewSale";
 
 export default function App() {
   return (
@@ -63,6 +64,7 @@ export default function App() {
               }
             />
             <Route path="/warehouses" element={<Warehouse />} />
+            <Route path="/newSale" element={<NewSale />} />
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />

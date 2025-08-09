@@ -15,6 +15,11 @@ const navItems = [
     path: "/",
   },
   {
+    icon: <GridIcon />,
+    name: "New Sale",
+    path: "/newSale",
+  },
+  {
     icon: <UserCircleIcon />,
     name: "Users",
     path: "/users",

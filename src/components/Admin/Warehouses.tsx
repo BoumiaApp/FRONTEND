@@ -4,7 +4,6 @@ import ComponentCard from "../common/ComponentCard";
 import PageMeta from "../common/PageMeta";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
-import { userAPI } from "../../services/userApi";
 import WarehouseTable from "../tables/WarehouseTable";
 import { warehouseAPI } from "../../services/warehouse";
 import { CreateWarehouseRequest, Warehouse } from "../../types/warehouse";

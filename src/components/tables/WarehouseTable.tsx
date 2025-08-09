@@ -9,8 +9,6 @@ import {
 
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
-import { User, ACCESS_LEVEL_LABELS } from "../../types/user";
-import { userAPI } from "../../services/userApi";
 import { Warehouse } from "../../types/warehouse";
 import { warehouseAPI } from "../../services/warehouse";
 
