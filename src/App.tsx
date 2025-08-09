@@ -36,22 +36,33 @@ export default function App() {
           <Route path="/signin" element={<SignIn />} />
 
           {/* Protected Dashboard Layout */}
-          <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-            <Route index path="/" element={<Home />} />
-            <Route path="/users" element={
-              <ProtectedRoute requiredAccessLevel={10}>
-                <Users />
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
               </ProtectedRoute>
-            } />
+            }
+          >
+            <Route index path="/" element={<Home />} />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute requiredAccessLevel={10}>
+                  <Users />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/clients" element={<Clients />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/product-groups" element={
-              <ProtectedRoute requiredAccessLevel={10}>
-                <ProductGroups />
-              </ProtectedRoute>
-            } />
+            <Route
+              path="/product-groups"
+              element={
+                <ProtectedRoute requiredAccessLevel={5}>
+                  <ProductGroups />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/warehouses" element={<Warehouse />} />
-
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />

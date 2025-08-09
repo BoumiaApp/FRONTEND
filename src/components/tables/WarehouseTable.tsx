@@ -12,56 +12,49 @@ import Button from "../ui/button/Button";
 import { User, ACCESS_LEVEL_LABELS } from "../../types/user";
 import { userAPI } from "../../services/userApi";
 import { Warehouse } from "../../types/warehouse";
+import { warehouseAPI } from "../../services/warehouse";
 
 interface UsersTablesProps {
   warehouses: Warehouse[];
   loading: boolean;
-  onDeleteUser: (userId: number) => Promise<void>;
+  onDeleteWarehouse: (userId: number) => Promise<void>;
 }
 
 export default function WarehouseTable({
   warehouses,
   loading,
-  onDeleteUser,
+  onDeleteWarehouse,
 }: UsersTablesProps) {
-  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [editingWarehouse, setEditingWarehouse] = useState<Warehouse | null>(
+    null
+  );
   const [editFormData, setEditFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    accessLevel: 0,
-    isEnabled: true,
+    name: "",
   });
   const [editLoading, setEditLoading] = useState(false);
   const [editError, setEditError] = useState<string | null>(null);
 
-  const handleEditUser = (user: User) => {
-    setEditingUser(user);
+  const handleEditWarehouse = (warehouse: Warehouse) => {
+    setEditingWarehouse(warehouse);
     setEditFormData({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      email: user.email,
-      accessLevel: user.accessLevel,
-      isEnabled: user.isEnabled,
+      name: warehouse.name,
     });
     setEditError(null);
   };
 
   const handleUpdateUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingUser) return;
+    if (!editingWarehouse) return;
 
     try {
       setEditLoading(true);
       setEditError(null);
-      await userAPI.updateUser(editingUser.id, editFormData);
-      setEditingUser(null);
+      await warehouseAPI.updateWarehouse(editingWarehouse.id, editFormData);
+      setEditingWarehouse(null);
       // Refresh the page to show updated data
       window.location.reload();
     } catch (err: any) {
-      setEditError(err.response?.data?.message || "Failed to update user");
+      setEditError(err.response?.data || "Failed to update user");
     } finally {
       setEditLoading(false);
     }
@@ -130,25 +123,23 @@ export default function WarehouseTable({
                   </TableCell>
                 </TableRow>
               ) : (
-                warehouses.map((warehouse ,index) => (
+                warehouses.map((warehouse, index) => (
                   <TableRow
                     key={warehouse.id}
                     className="hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors"
                   >
                     <TableCell className="px-5 py-4 text-left text-sm text-gray-600 dark:text-gray-300">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
-                          {warehouse.name.charAt(0)}
-                          {warehouse.name.charAt(0)}
-                        </div>
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-sm shadow-sm">
+                        {warehouse.name.charAt(0)}
+                        {warehouse.name.charAt(0)}
+                      </div>
                     </TableCell>
                     <TableCell className="px-5 py-4 text-left">
                       <div className="flex items-center gap-3">
-               
                         <div>
                           <p className="font-medium text-gray-800 dark:text-white">
                             {warehouse.name}
                           </p>
-                      
                         </div>
                       </div>
                     </TableCell>
@@ -158,7 +149,7 @@ export default function WarehouseTable({
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-1 hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                        // onClick={() => handleEditUser(user)}
+                        onClick={() => handleEditWarehouse(warehouse)}
                       >
                         <BoxIcon className="size-4" />
                         Edit
@@ -168,7 +159,7 @@ export default function WarehouseTable({
                         variant="outline"
                         size="sm"
                         className="flex items-center gap-1 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20"
-                        // onClick={() => onDeleteUser(user.id)}
+                        onClick={() => onDeleteWarehouse(warehouse.id)}
                       >
                         <BoxIcon className="size-4" />
                         Delete
@@ -183,7 +174,7 @@ export default function WarehouseTable({
       </div>
 
       {/* Edit User Modal */}
-      {editingUser && (
+      {editingWarehouse && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto shadow-xl">
             <div className="flex justify-between items-center mb-6">
@@ -191,7 +182,7 @@ export default function WarehouseTable({
                 Edit User
               </h3>
               <button
-                onClick={() => setEditingUser(null)}
+                onClick={() => setEditingWarehouse(null)}
                 className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                 disabled={editLoading}
               >
@@ -231,118 +222,22 @@ export default function WarehouseTable({
             )}
 
             <form onSubmit={handleUpdateUser} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    First Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={editFormData.firstName}
-                    onChange={(e) =>
-                      setEditFormData({
-                        ...editFormData,
-                        firstName: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Last Name *
-                  </label>
-                  <input
-                    type="text"
-                    value={editFormData.lastName}
-                    onChange={(e) =>
-                      setEditFormData({
-                        ...editFormData,
-                        lastName: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                    required
-                  />
-                </div>
-              </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Username *
+                  Name *
                 </label>
                 <input
                   type="text"
-                  value={editFormData.username}
+                  value={editFormData.name}
                   onChange={(e) =>
                     setEditFormData({
                       ...editFormData,
-                      username: e.target.value,
+                      name: e.target.value,
                     })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
                   required
                 />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  value={editFormData.email}
-                  onChange={(e) =>
-                    setEditFormData({ ...editFormData, email: e.target.value })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Access Level
-                </label>
-                <select
-                  value={editFormData.accessLevel}
-                  onChange={(e) =>
-                    setEditFormData({
-                      ...editFormData,
-                      accessLevel: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                >
-                  {Object.entries(ACCESS_LEVEL_LABELS).map(([level, label]) => (
-                    <option key={level} value={level}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="isEnabled"
-                  checked={editFormData.isEnabled}
-                  onChange={(e) =>
-                    setEditFormData({
-                      ...editFormData,
-                      isEnabled: e.target.checked,
-                    })
-                  }
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor="isEnabled"
-                  className="ml-2 text-sm text-gray-700 dark:text-gray-300"
-                >
-                  User is enabled
-                </label>
               </div>
 
               <div className="flex gap-3 pt-4">
@@ -355,7 +250,7 @@ export default function WarehouseTable({
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={() => setEditingUser(null)}
+                  onClick={() => setEditingWarehouse(null)}
                   className="flex-1"
                   disabled={editLoading}
                 >
