@@ -57,7 +57,6 @@ export default function BarcodeInput({
       <div className="space-y-5 sm:space-y-6">
         {/* Error Input */}
         <div>
-          <Label>Search Products</Label>
           <Input
             type="text"
             value={searchItem}

@@ -37,6 +37,8 @@ export default function NewSale() {
 
         {/* Right Side - Cart */}
         <div className="space-y-6 bg-red-400">
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
+                A demain Inshlh</h2>
           {/* TODO: Cart will be implemented here */}
         </div>
       </div>
