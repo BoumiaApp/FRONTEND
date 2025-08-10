@@ -4,13 +4,42 @@ import PageBreadcrumb from "../common/PageBreadCrumb";
 import PageMeta from "../common/PageMeta";
 import BarcodeInput from "../SmallsUI/NewSale/BarcodeInput";
 import ProductCard from "../SmallsUI/NewSale/ProductCard";
+import Cart from "../SmallsUI/NewSale/Cart";
 
 export default function NewSale() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState<{ product: Product; quantity: number }[]>(
+    []
+  );
 
   const handleAddToCart = (product: Product) => {
-    console.log("Added to cart:", product);
-    // TODO: Add to cart state
+    setCart((prev) => {
+      const existing = prev.find((item) => item.product.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.product.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [...prev, { product, quantity: 1 }];
+    });
+  };
+
+  const handleRemoveFromCart = (productId: number) => {
+    setCart((prev) => prev.filter((item) => item.product.id !== productId));
+  };
+
+  const handleUpdateQuantity = (productId: number, quantity: number) => {
+    if (quantity <= 0) {
+      handleRemoveFromCart(productId);
+    } else {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.product.id === productId ? { ...item, quantity } : item
+        )
+      );
+    }
   };
 
   return (
@@ -36,10 +65,12 @@ export default function NewSale() {
         </div>
 
         {/* Right Side - Cart */}
-        <div className="space-y-6 bg-red-400">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
-                A demain Inshlh</h2>
-          {/* TODO: Cart will be implemented here */}
+        <div className="space-y-6">
+          <Cart
+            items={cart}
+            onRemove={handleRemoveFromCart}
+            onUpdateQuantity={handleUpdateQuantity}
+          />
         </div>
       </div>
     </div>
