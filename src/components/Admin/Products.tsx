@@ -50,6 +50,7 @@ export default function Products() {
     ageRestriction: undefined,
     rank: 0,
     barcode: "",
+    quantity: 0,
   });
   const [createLoading, setCreateLoading] = useState(false);
   const [error, setError] = useState("");
@@ -256,6 +257,7 @@ export default function Products() {
         ageRestriction: undefined,
         rank: 0,
         barcode: "",
+        quantity: 0,
       });
     } catch (error: any) {
       console.error("Error creating product:", error);
@@ -516,23 +518,23 @@ export default function Products() {
               </button>
             </div>
             {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
-              <div className="flex items-center">
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                {error}
+              <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
+                <div className="flex items-center">
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  {error}
+                </div>
               </div>
-            </div>
-          )}
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -670,8 +672,26 @@ export default function Products() {
                   placeholder="0.00"
                 />
               </div>
-
               <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Quantity
+                </label>
+                <input
+                  type="number"
+                  value={createFormData.quantity || ""}
+                  onChange={(e) =>
+                    setCreateFormData({
+                      ...createFormData,
+                      quantity: e.target.value
+                        ? parseInt(e.target.value)
+                        : undefined,
+                    })
+                  }
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
+                  placeholder="Quantity"
+                />
+              </div>
+              <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Rank
                 </label>
@@ -710,7 +730,7 @@ export default function Products() {
                     </span>
                   </label>
 
-                  <label className="flex items-center">
+                  {/* <label className="flex items-center">
                     <input
                       type="checkbox"
                       checked={createFormData.isService}
@@ -725,7 +745,7 @@ export default function Products() {
                     <span className="text-sm text-gray-700 dark:text-gray-300">
                       Service
                     </span>
-                  </label>
+                  </label> */}
 
                   <label className="flex items-center">
                     <input

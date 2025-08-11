@@ -17,7 +17,7 @@ const Cart: React.FC<CartProps> = ({ items, onRemove, onUpdateQuantity }) => {
         (sum, item) => sum + Number(item.product.price) * item.quantity,
         0
     );
-
+console.log('Cart items:', items);
     return (
         <div className="p-4 rounded-lg bg-white shadow-md dark:bg-gray-800">
             <h2 className="text-lg font-bold mb-4 dark:text-white">Cart</h2>

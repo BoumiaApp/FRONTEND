@@ -35,6 +35,10 @@ const navItems = [
     name: "Product Groups",
     path: "/product-groups",
     adminOnly: false, // Only show for admin users
+  },  {
+    icon: <UserCircleIcon />,
+    name: "Packs",
+    path: "/packs",
   },
   {
     icon: <UserCircleIcon />,

@@ -5,7 +5,7 @@ export interface Product {
   name: string;
   description?: string;
   productGroupId?: number;
-  productGroup?: any;
+  productGroupName?: string;
   measurementUnit?: string;
   price: number;
   cost?: number;
@@ -19,6 +19,7 @@ export interface Product {
   rank?: number;
   createdAt?: string;
   updatedAt?: string;
+  quantity?: number; // Optional for stock management
 }
 
 export interface CreateProductRequest {
@@ -38,6 +39,8 @@ export interface CreateProductRequest {
   color?: string;
   ageRestriction?: number;
   rank?: number;
+  quantity?: number; // Optional for stock management
+  barcode?: string; // Optional for barcode scanning
 }
 
 export interface UpdateProductRequest {
@@ -57,6 +60,8 @@ export interface UpdateProductRequest {
   color?: string;
   ageRestriction?: number;
   rank?: number;
+  quantity?: number; // Optional for stock management
+  barcode?: string; // Optional for barcode scanning
 }
 
 export interface ProductSearchParams {
