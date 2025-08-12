@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Pencil, Printer, Eye, Trash2 } from "lucide-react"
+
 import {
   Table,
   TableBody,
@@ -7,12 +9,12 @@ import {
   TableRow,
 } from "../ui/table";
 import Badge from "../ui/badge/Badge";
-import { BoxIcon, EyeCloseIcon, EyeIcon, TrashBinIcon } from "../../icons";
 import Button from "../ui/button/Button";
 import { Product, UpdateProductRequest } from "../../types/product";
 
 import { ProductGroup } from "../../types/productGroup";
 import { PosOrder } from "../../types/order";
+import { BoxIcon } from "../../icons";
 
 interface OrdersTableProps {
   orders: PosOrder[];
@@ -158,26 +160,21 @@ export default function OrdersTable({
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Product
+                  Client/Num Order
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Code
+                  GSM/CODE
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Price/Cost
+                  Price/Dis
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
-                >
-                  Group
-                </TableCell>
+
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
@@ -190,12 +187,7 @@ export default function OrdersTable({
                 >
                   Quantity
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
-                >
-                  Properties
-                </TableCell>
+
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
@@ -235,6 +227,7 @@ export default function OrdersTable({
                     <div className="space-y-1">
                       {order.customer?.phoneNumber && (
                         <div className="text-sm text-gray-700 dark:text-gray-300">
+                          <span className="font-medium">GSM:</span>{" "}
                           {order.customer.phoneNumber}
                         </div>
                       )}
@@ -253,20 +246,11 @@ export default function OrdersTable({
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
                         {order.total.toFixed(2)} DH
                       </div>
-                      {order.discount && Number(order.discount) > 0 && (
+                      {Number(order.discount) > 0 && (
                         <div className="text-xs text-gray-500 dark:text-gray-400">
                           Discount: {order.discount}
                         </div>
                       )}
-                    </div>
-                  </TableCell>
-
-                  {/* Group (Using Order Number here as placeholder, adjust if needed) */}
-                  <TableCell className="px-5 py-4">
-                    <div className="space-y-1">
-                      <div className="text-sm text-gray-700 dark:text-gray-300">
-                        {order.number}
-                      </div>
                     </div>
                   </TableCell>
 
@@ -291,63 +275,51 @@ export default function OrdersTable({
                     {order.items?.length || 0}
                   </TableCell>
 
-                  {/* Properties (you can customize badges or leave empty) */}
-                  <TableCell className="px-5 py-4">
-                    <div className="flex flex-wrap gap-1">
-                      {/* Example badges, adjust or remove as needed */}
-                      <Badge size="sm" color="info">
-                        Service
-                      </Badge>
-                      <Badge size="sm" color="warning">
-                        Price Change
-                      </Badge>
-                      <Badge size="sm" color="success">
-                        Tax Inclusive
-                      </Badge>
-                      <Badge size="sm" color="primary">
-                        Default Qty
-                      </Badge>
-                    </div>
-                  </TableCell>
-
                   {/* Actions: Only icons, no text */}
                   <TableCell className="px-5 py-4">
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
                         size="sm"
-                        // onClick={() => handleEditOrder(order.id)}
                         aria-label="Edit order"
-                        className="flex items-center justify-center p-1"
+                        className="flex items-center gap-1"
+                        // onClick={() => handleEditOrder(order.id)}
                       >
-                        <BoxIcon className="size-4" />
+                        <Pencil className="size-4" />
+                        Edit
                       </Button>
+
                       <Button
                         variant="outline"
                         size="sm"
-                        // onClick={() => handlePrintTicket(order.id)}
                         aria-label="Print ticket"
-                        className="flex items-center justify-center p-1"
+                        className="flex items-center gap-1"
+                        // onClick={() => handlePrintTicket(order.id)}
                       >
-                        d{/* <PrinterIcon className="size-4" /> */}
+                        <Printer className="size-4" />
+                        Print
                       </Button>
+
                       <Button
                         variant="outline"
                         size="sm"
-                        // onClick={() => handleViewDetails(order.id)}
                         aria-label="View details"
-                        className="flex items-center justify-center p-1"
+                        className="flex items-center gap-1"
+                        // onClick={() => handleViewDetails(order.id)}
                       >
-                        <EyeCloseIcon className="size-4" />
+                        <Eye className="size-4" />
+                        View
                       </Button>
+
                       <Button
                         variant="outline"
                         size="sm"
-                        // onClick={() => handleDeleteOrder(order.id)}
                         aria-label="Delete order"
-                        className="flex items-center justify-center p-1 text-red-500 hover:text-red-700"
+                        className="flex items-center gap-1 text-red-500 hover:text-red-700"
+                        // onClick={() => handleDeleteOrder(order.id)}
                       >
-                        <TrashBinIcon className="size-4" />
+                        <Trash2 className="size-4" />
+                        Delete
                       </Button>
                     </div>
                   </TableCell>

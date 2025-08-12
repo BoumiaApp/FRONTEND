@@ -322,12 +322,12 @@ export default function Orders() {
   return (
     <>
       <PageMeta
-        title="Products Management | Admin Dashboard"
-        description="Manage products, services, and inventory items"
+        title="Orders Management | Admin Dashboard"
+        description="Manage Orders"
       />
-      <PageBreadcrumb pageTitle="Products" />
+      <PageBreadcrumb pageTitle="Orders" />
       <div className="space-y-6">
-        <ComponentCard title="Products Management">
+        <ComponentCard title="Orders Management">
           {/* Search and Filter Controls */}
           <div className="flex flex-wrap items-center gap-4 mb-6">
             <div className="flex items-center gap-2">
@@ -357,9 +357,9 @@ export default function Orders() {
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400"
             >
               <option value="all">All Products</option>
-              <option value="enabled">Enabled Only</option>
-              <option value="disabled">Disabled Only</option>
-              <option value="services">Services Only</option>
+              <option value="enabled">Pending Only</option>
+              <option value="disabled">Completed Only</option>
+              {/* <option value="services">Services Only</option>
               <option value="non-services">Non-Services Only</option>
               <option value="price-change-allowed">Price Change Allowed</option>
               <option value="tax-inclusive">Tax Inclusive</option>
@@ -369,7 +369,7 @@ export default function Orders() {
               <option value="by-color">By Color</option>
               <option value="by-age-restriction">By Rank Range</option>
               <option value="by-price-range">By Price Range</option>
-              <option value="by-cost-range">By Cost Range</option>
+              <option value="by-cost-range">By Cost Range</option> */}
             </select>
 
             {filterType === "by-group" && (
