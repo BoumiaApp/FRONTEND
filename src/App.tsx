@@ -25,6 +25,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Warehouse from "./components/Admin/Warehouses";
 import NewSale from "./components/Admin/NewSale";
+import Orders from "./components/Admin/Orders";
 
 export default function App() {
   return (
@@ -54,17 +55,25 @@ export default function App() {
               }
             />
             <Route path="/clients" element={<Clients />} />
-            <Route path="/products" element={<Products />} />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute requiredAccessLevel={10}>
+                  <Products />{" "}
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/product-groups"
               element={
-                <ProtectedRoute requiredAccessLevel={5}>
+                <ProtectedRoute requiredAccessLevel={10}>
                   <ProductGroups />
                 </ProtectedRoute>
               }
             />
             <Route path="/warehouses" element={<Warehouse />} />
             <Route path="/newSale" element={<NewSale />} />
+            <Route path="/orders" element={<Orders />} />
 
             {/* Others Page */}
             <Route path="/profile" element={<UserProfiles />} />

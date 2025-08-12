@@ -49,7 +49,7 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
       name: customer.name,
       taxNumber: customer.taxNumber || '',
       email: customer.email || '',
-      phone: customer.phone || '',
+      phone: customer.phoneNumber || '',
       address: customer.address || '',
       city: customer.city || '',
       postalCode: customer.postalCode || '',
