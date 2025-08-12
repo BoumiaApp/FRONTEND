@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Pencil, Printer, Eye, Trash2 } from "lucide-react"
+import { Pencil, Printer, Eye, Trash2 } from "lucide-react";
 
 import {
   Table,
@@ -174,7 +174,12 @@ export default function OrdersTable({
                 >
                   Price/Dis
                 </TableCell>
-
+                <TableCell
+                  isHeader
+                  className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
+                >
+                  Cahier{" "}
+                </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
@@ -254,6 +259,15 @@ export default function OrdersTable({
                     </div>
                   </TableCell>
 
+                  <TableCell className="px-5 py-4">
+                    <div className="flex items-center">
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white">
+                          {order.userName || "Unknown Customer"}
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
                   {/* Status */}
                   <TableCell className="px-5 py-4">
                     <Badge

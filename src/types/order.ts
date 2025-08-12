@@ -39,7 +39,7 @@ export interface Customer {
   // Order type
   export interface PosOrder {
     id: number;
-    userId: number;
+    userName: string;
     number: string;
     discount: number;
     discountType: number;   // 0 = fixed, 1 = percentage
