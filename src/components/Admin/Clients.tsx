@@ -35,7 +35,7 @@ export default function Clients() {
     postalCode: "",
     country: "",
     countrySubentity: "",
-    citySubdivision: "",
+    citySubdivisionName: "",
     isEnabled: true,
     isTaxExempt: false,
     isSupplier: false,
@@ -139,7 +139,7 @@ export default function Clients() {
     try {
       setCreateLoading(true);
       setError(null);
-
+      console.log(createFormData);
       await customerAPI.createCustomer(createFormData);
 
       // Reset form and close modal
@@ -154,7 +154,7 @@ export default function Clients() {
         postalCode: "",
         country: "",
         countrySubentity: "",
-        citySubdivision: "",
+        citySubdivisionName: "",
         isEnabled: true,
         isTaxExempt: false,
         isSupplier: false,
@@ -166,6 +166,7 @@ export default function Clients() {
       fetchCustomers();
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to create customer");
+      console.error("Create customer error:", err);
     } finally {
       setCreateLoading(false);
     }

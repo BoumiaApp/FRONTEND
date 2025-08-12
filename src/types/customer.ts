@@ -30,7 +30,7 @@ export interface CreateCustomerRequest {
   postalCode?: string;
   country?: string;
   countrySubentity?: string;
-  citySubdivision?: string;
+  citySubdivisionName?: string;
   isEnabled: boolean;
   isTaxExempt: boolean;
   isSupplier: boolean;
