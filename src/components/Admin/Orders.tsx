@@ -14,10 +14,13 @@ import {
   PRODUCT_COLORS,
 } from "../../types/product";
 import { ProductGroup } from "../../types/productGroup";
+import { orderAPI } from "../../services/orderApi";
+import { PosOrder } from "../../types/order";
+import OrdersTable from "../tables/OrdersTable";
 
-export default function Products() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
+export default function Orders() {
+  const [orders, setOrders] = useState<PosOrder[]>([]);
+  const [allOrders, setAllOrders] = useState<PosOrder[]>([]);
   const [productGroups, setProductGroups] = useState<ProductGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +59,7 @@ export default function Products() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetchProducts();
+    fetchOrders();
     fetchProductGroups();
   }, []);
 
@@ -64,16 +67,18 @@ export default function Products() {
     if (searchTerm) {
       handleSearch();
     } else {
-      setProducts(allProducts);
+      setOrders(allOrders);
     }
-  }, [searchTerm, searchType, allProducts]);
+  }, [searchTerm, searchType, allOrders]);
 
-  const fetchProducts = async () => {
+  const fetchOrders = async () => {
     try {
       setLoading(true);
-      const response = await productAPI.getAllProducts();
-      setProducts(response.data);
-      setAllProducts(response.data);
+      const response = await orderAPI.getAllOrders();
+      console.log(response);
+      
+      setOrders(response.data);
+      setAllOrders(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
       setError("Failed to fetch products");
@@ -317,12 +322,12 @@ export default function Products() {
   return (
     <>
       <PageMeta
-        title="Products Management | Admin Dashboard"
-        description="Manage products, services, and inventory items"
+        title="Orders Management | Admin Dashboard"
+        description="Manage Orders"
       />
-      <PageBreadcrumb pageTitle="Products" />
+      <PageBreadcrumb pageTitle="Orders" />
       <div className="space-y-6">
-        <ComponentCard title="Products Management">
+        <ComponentCard title="Orders Management">
           {/* Search and Filter Controls */}
           <div className="flex flex-wrap items-center gap-4 mb-6">
             <div className="flex items-center gap-2">
@@ -352,9 +357,9 @@ export default function Products() {
               className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400"
             >
               <option value="all">All Products</option>
-              <option value="enabled">Enabled Only</option>
-              <option value="disabled">Disabled Only</option>
-              <option value="services">Services Only</option>
+              <option value="enabled">Pending Only</option>
+              <option value="disabled">Completed Only</option>
+              {/* <option value="services">Services Only</option>
               <option value="non-services">Non-Services Only</option>
               <option value="price-change-allowed">Price Change Allowed</option>
               <option value="tax-inclusive">Tax Inclusive</option>
@@ -364,7 +369,7 @@ export default function Products() {
               <option value="by-color">By Color</option>
               <option value="by-age-restriction">By Rank Range</option>
               <option value="by-price-range">By Price Range</option>
-              <option value="by-cost-range">By Cost Range</option>
+              <option value="by-cost-range">By Cost Range</option> */}
             </select>
 
             {filterType === "by-group" && (
@@ -492,8 +497,8 @@ export default function Products() {
             </div>
           )}
 
-          <ProductsTable
-            products={products}
+          <OrdersTable
+            orders={orders}
             loading={loading}
             onDeleteProduct={handleDeleteProduct}
             onToggleProductStatus={handleToggleProductStatus}

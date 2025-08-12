@@ -2,11 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
-import {
-  GridIcon,
-  UserCircleIcon,
-  BoxIcon,
-} from "../icons";
+import { GridIcon, UserCircleIcon, BoxIcon } from "../icons";
 
 const navItems = [
   {
@@ -29,17 +25,28 @@ const navItems = [
     icon: <BoxIcon />,
     name: "Products",
     path: "/products",
+    adminOnly: true, // Only show for admin users
   },
   {
     icon: <BoxIcon />,
     name: "Product Groups",
     path: "/product-groups",
-    adminOnly: false, // Only show for admin users
+    adminOnly: true, // Only show for admin users
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Packs",
+    path: "/packs",
   },
   {
     icon: <UserCircleIcon />,
     name: "Clients",
     path: "/clients",
+  },
+  {
+    icon: <UserCircleIcon />,
+    name: "Commandes",
+    path: "/orders",
   },
   {
     icon: <UserCircleIcon />,
@@ -89,8 +96,6 @@ export default function AppSidebar() {
           );
         })}
       </nav>
-
-
     </div>
   );
 }

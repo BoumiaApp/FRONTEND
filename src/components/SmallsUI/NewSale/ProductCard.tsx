@@ -22,7 +22,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
 
       {/* Price */}
       <p className="text-xl font-bold mt-2 text-gray-800 dark:text-gray-200">
-        ${product.price}
+        {product.price} DH
       </p>
 
       {/* Optional Color */}

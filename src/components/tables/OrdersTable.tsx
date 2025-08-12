@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Pencil, Printer, Eye, Trash2 } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -7,16 +9,15 @@ import {
   TableRow,
 } from "../ui/table";
 import Badge from "../ui/badge/Badge";
-import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
 import { Product, UpdateProductRequest } from "../../types/product";
-import { productAPI } from "../../services/productApi";
-import { productGroupAPI } from "../../services/productGroupApi";
 
 import { ProductGroup } from "../../types/productGroup";
+import { PosOrder } from "../../types/order";
+import { BoxIcon } from "../../icons";
 
-interface ProductsTableProps {
-  products: Product[];
+interface OrdersTableProps {
+  orders: PosOrder[];
   loading: boolean;
   onDeleteProduct: (productId: number) => Promise<void>;
   onToggleProductStatus: (
@@ -26,13 +27,13 @@ interface ProductsTableProps {
   onUpdateProduct: (productId: number, updatedProduct: Product) => void;
 }
 
-export default function ProductsTable({
-  products,
+export default function OrdersTable({
+  orders,
   loading,
   onDeleteProduct,
   onToggleProductStatus,
   onUpdateProduct,
-}: ProductsTableProps) {
+}: OrdersTableProps) {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editFormData, setEditFormData] = useState<UpdateProductRequest>({
     code: "",
@@ -54,83 +55,83 @@ export default function ProductsTable({
   const [editError, setEditError] = useState("");
   const [productGroups, setProductGroups] = useState<ProductGroup[]>([]);
 
-  useEffect(() => {
-    fetchProductGroups();
-  }, []);
+  // useEffect(() => {
+  //   fetchProductGroups();
+  // }, []);
 
-  const fetchProductGroups = async () => {
-    try {
-      const response = await productGroupAPI.getAllProductGroups();
-      setProductGroups(response.data);
-    } catch (error) {
-      console.error("Error fetching product groups:", error);
-    }
-  };
+  // const fetchProductGroups = async () => {
+  //   try {
+  //     const response = await productGroupAPI.getAllProductGroups();
+  //     setProductGroups(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching product groups:", error);
+  //   }
+  // };
 
-  const handleEditProduct = (product: Product) => {
-    setEditingProduct(product);
-    setEditFormData({
-      code: product.code || "",
-      barcode: product.barcode || "",
-      name: product.name,
-      description: product.description || "",
-      productGroupId: product.productGroupId,
-      price: product.price,
-      cost: product.cost || 0,
-      isEnabled: product.isEnabled,
-      isService: product.isService,
-      isPriceChangeAllowed: product.isPriceChangeAllowed,
-      isTaxInclusive: product.isTaxInclusive,
-      usesDefaultQuantity: product.usesDefaultQuantity,
-      rank: product.rank || 0,
-      quantity: product.quantity || 0, // Optional for stock management
-    });
-    setEditError("");
-    console.log(products);
-  };
+  // const handleEditProduct = (product: Product) => {
+  //   setEditingProduct(product);
+  //   setEditFormData({
+  //     code: product.code || "",
+  //     barcode: product.barcode || "",
+  //     name: product.name,
+  //     description: product.description || "",
+  //     productGroupId: product.productGroupId,
+  //     price: product.price,
+  //     cost: product.cost || 0,
+  //     isEnabled: product.isEnabled,
+  //     isService: product.isService,
+  //     isPriceChangeAllowed: product.isPriceChangeAllowed,
+  //     isTaxInclusive: product.isTaxInclusive,
+  //     usesDefaultQuantity: product.usesDefaultQuantity,
+  //     rank: product.rank || 0,
+  //     quantity: product.quantity || 0, // Optional for stock management
+  //   });
+  //   setEditError("");
+  //   console.log(products);
+  // };
 
-  const handleUpdateProduct = async () => {
-    if (!editingProduct || !editFormData.name) {
-      setEditError("Name is required field");
-      return;
-    }
+  // const handleUpdateProduct = async () => {
+  //   if (!editingProduct || !editFormData.name) {
+  //     setEditError("Name is required field");
+  //     return;
+  //   }
 
-    try {
-      setEditLoading(true);
-      setEditError("");
+  //   try {
+  //     setEditLoading(true);
+  //     setEditError("");
 
-      const response = await productAPI.updateProduct(
-        editingProduct.id,
-        editFormData
-      );
+  //     const response = await productAPI.updateProduct(
+  //       editingProduct.id,
+  //       editFormData
+  //     );
 
-      // Update the product in the parent component
-      const updatedProduct = response.data;
-      onUpdateProduct(editingProduct.id, updatedProduct);
+  //     // Update the product in the parent component
+  //     const updatedProduct = response.data;
+  //     onUpdateProduct(editingProduct.id, updatedProduct);
 
-      setEditingProduct(null);
-      setEditFormData({
-        code: "",
-        barcode: "",
-        name: "",
-        description: "",
-        productGroupId: undefined,
-        price: 0,
-        cost: 0,
-        isEnabled: true,
-        isService: false,
-        isPriceChangeAllowed: true,
-        isTaxInclusive: false,
-        usesDefaultQuantity: false,
-        rank: 0,
-      });
-    } catch (error: any) {
-      console.error("Error updating product:", error);
-      setEditError(error.response?.data?.message || "Failed to update product");
-    } finally {
-      setEditLoading(false);
-    }
-  };
+  //     setEditingProduct(null);
+  //     setEditFormData({
+  //       code: "",
+  //       barcode: "",
+  //       name: "",
+  //       description: "",
+  //       productGroupId: undefined,
+  //       price: 0,
+  //       cost: 0,
+  //       isEnabled: true,
+  //       isService: false,
+  //       isPriceChangeAllowed: true,
+  //       isTaxInclusive: false,
+  //       usesDefaultQuantity: false,
+  //       rank: 0,
+  //     });
+  //   } catch (error: any) {
+  //     console.error("Error updating product:", error);
+  //     setEditError(error.response?.data?.message || "Failed to update product");
+  //   } finally {
+  //     setEditLoading(false);
+  //   }
+  // };
 
   if (loading) {
     return (
@@ -140,10 +141,10 @@ export default function ProductsTable({
     );
   }
 
-  if (products.length === 0) {
+  if (orders.length === 0) {
     return (
       <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-        No products found
+        No orders found
       </div>
     );
   }
@@ -159,25 +160,25 @@ export default function ProductsTable({
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Product
+                  Client/Num Order
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Code
+                  GSM/CODE
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Price/Cost
+                  Price/Dis
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
                 >
-                  Group
+                  Cahier{" "}
                 </TableCell>
                 <TableCell
                   isHeader
@@ -191,12 +192,7 @@ export default function ProductsTable({
                 >
                   Quantity
                 </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
-                >
-                  Properties
-                </TableCell>
+
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-semibold text-gray-600 text-left text-sm uppercase tracking-wide dark:text-gray-300"
@@ -207,11 +203,12 @@ export default function ProductsTable({
             </TableHeader>
 
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {products.map((product) => (
+              {orders.map((order) => (
                 <TableRow
-                  key={product.id}
+                  key={order.id}
                   className="hover:bg-gray-50 dark:hover:bg-white/[0.03] transition"
                 >
+                  {/* Customer Name & Order Number */}
                   <TableCell className="px-5 py-4">
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center mr-3">
@@ -219,131 +216,123 @@ export default function ProductsTable({
                       </div>
                       <div>
                         <div className="font-medium text-gray-900 dark:text-white">
-                          {product.name}
+                          {order.customer?.name || "Unknown Customer"}
                         </div>
-                        {product.description && (
+                        {order.number && (
                           <div className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">
-                            {product.description}
+                            {order.number}
                           </div>
                         )}
                       </div>
                     </div>
                   </TableCell>
 
+                  {/* Customer Phone & Code */}
                   <TableCell className="px-5 py-4">
                     <div className="space-y-1">
-                      {product.code && (
+                      {order.customer?.phoneNumber && (
                         <div className="text-sm text-gray-700 dark:text-gray-300">
-                          <span className="font-medium">Code:</span>{" "}
-                          {product.code}
+                          <span className="font-medium">GSM:</span>{" "}
+                          {order.customer.phoneNumber}
                         </div>
                       )}
-                      {product.barcode && (
+                      {order.customer?.code && (
                         <div className="text-sm text-gray-700 dark:text-gray-300">
-                          <span className="font-medium">Barcode:</span>{" "}
-                          {product.barcode}
+                          <span className="font-medium">Code:</span>{" "}
+                          {order.customer.code}
                         </div>
                       )}
                     </div>
                   </TableCell>
 
+                  {/* Total */}
                   <TableCell className="px-5 py-4">
                     <div className="space-y-1">
                       <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {product.price.toFixed(2)}DH
+                        {order.total.toFixed(2)} DH
                       </div>
-                      {product.cost && product.cost > 0 && (
+                      {Number(order.discount) > 0 && (
                         <div className="text-xs text-gray-500 dark:text-gray-400">
-                          Cost: {product.cost.toFixed(2)} DH
+                          Discount: {order.discount}
                         </div>
                       )}
                     </div>
                   </TableCell>
 
                   <TableCell className="px-5 py-4">
-                    <div className="space-y-1">
-                      <div className="text-sm text-gray-700 dark:text-gray-300">
-                        {product.productGroupName}
+                    <div className="flex items-center">
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white">
+                          {order.userName || "Unknown Customer"}
+                        </div>
                       </div>
                     </div>
                   </TableCell>
-
-                  {/* <TableCell className="px-5 py-4">
-                    <Badge
-                      size="sm"
-                      color={product.isEnabled ? "success" : "error"}
-                    >
-                      {product.isEnabled ? "Active" : "Disabled"}
-                    </Badge>
-                  </TableCell> */}
-
+                  {/* Status */}
                   <TableCell className="px-5 py-4">
                     <Badge
                       size="sm"
-                      color={(product.quantity ?? 0) > 0 ? "success" : "error"}
+                      color={
+                        order.status?.toLowerCase() === "pending"
+                          ? "warning"
+                          : order.status?.toLowerCase() === "completed"
+                          ? "success"
+                          : "primary"
+                      }
                     >
-                      {product.quantity}
+                      {order.status || "Unknown"}
                     </Badge>
                   </TableCell>
 
-                  <TableCell className="px-5 py-4">
-                    <div className="flex flex-wrap gap-1">
-                      {product.isService && (
-                        <Badge size="sm" color="info">
-                          Service
-                        </Badge>
-                      )}
-                      {product.isPriceChangeAllowed && (
-                        <Badge size="sm" color="warning">
-                          Price Change
-                        </Badge>
-                      )}
-                      {product.isTaxInclusive && (
-                        <Badge size="sm" color="success">
-                          Tax Inclusive
-                        </Badge>
-                      )}
-                      {product.usesDefaultQuantity && (
-                        <Badge size="sm" color="primary">
-                          Default Qty
-                        </Badge>
-                      )}
-                    </div>
+                  {/* Quantity: total items count */}
+                  <TableCell className="px-5 py-4 text-gray-700 dark:text-gray-300">
+                    {order.items?.length || 0}
                   </TableCell>
 
+                  {/* Actions: Only icons, no text */}
                   <TableCell className="px-5 py-4">
                     <div className="flex gap-2">
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handleEditProduct(product)}
+                        aria-label="Edit order"
                         className="flex items-center gap-1"
+                        // onClick={() => handleEditOrder(order.id)}
                       >
-                        <BoxIcon className="size-4" />
+                        <Pencil className="size-4" />
                         Edit
                       </Button>
+
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() =>
-                          onToggleProductStatus(product.id, product.isEnabled)
-                        }
-                        className={`flex items-center gap-1 ${
-                          product.isEnabled
-                            ? "text-orange-500 hover:text-orange-700"
-                            : "text-green-500 hover:text-green-700"
-                        }`}
+                        aria-label="Print ticket"
+                        className="flex items-center gap-1"
+                        // onClick={() => handlePrintTicket(order.id)}
                       >
-                        <BoxIcon className="size-4" />
-                        {product.isEnabled ? "Disable" : "Enable"}
+                        <Printer className="size-4" />
+                        Print
                       </Button>
+
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => onDeleteProduct(product.id)}
-                        className="flex items-center gap-1 text-red-500 hover:text-red-700"
+                        aria-label="View details"
+                        className="flex items-center gap-1"
+                        // onClick={() => handleViewDetails(order.id)}
                       >
-                        <BoxIcon className="size-4" />
+                        <Eye className="size-4" />
+                        View
+                      </Button>
+
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        aria-label="Delete order"
+                        className="flex items-center gap-1 text-red-500 hover:text-red-700"
+                        // onClick={() => handleDeleteOrder(order.id)}
+                      >
+                        <Trash2 className="size-4" />
                         Delete
                       </Button>
                     </div>
@@ -503,7 +492,6 @@ export default function ProductsTable({
                 />
               </div>
 
-           
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Quantity

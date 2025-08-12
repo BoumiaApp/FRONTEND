@@ -4,7 +4,7 @@ export interface Customer {
   name: string;
   taxNumber?: string;
   email?: string;
-  phone?: string;
+  phoneNumber?: string;
   address?: string;
   city?: string;
   postalCode?: string;
