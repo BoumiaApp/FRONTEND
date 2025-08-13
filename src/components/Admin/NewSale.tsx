@@ -99,7 +99,6 @@ export default function NewSale() {
   
   
   const handleSaveForLater = async (customerId: number) => {
-    alert("Saving order for later... This will not be confirmed yet.");
     const orderPayload: CreateOrderPayload = {
       customerId,
       userId: CURRENT_USER_ID,
