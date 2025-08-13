@@ -3,8 +3,8 @@ import api from "./api";
 export const orderAPI = {
   getAllOrders: () => api.get("/api/posorders"),
 //   getWarehouseById: (id: number) => api.get(`/api/warehouse/${id}`),
-//   createWarehouse: (warehouseData: { name: string }) =>
-//     api.post("/api/warehouse", warehouseData),
+  createOrder: (orderData: { name: string }) =>
+    api.post("/api/posorders", orderData),
 //   updateWarehouse: (
 //     id: number,
 //     warehouseData: {
