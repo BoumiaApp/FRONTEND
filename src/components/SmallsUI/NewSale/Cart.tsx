@@ -9,13 +9,14 @@ export interface CartItem {
   price: number;
   discount: number;
   discountType: "fixed" | "percent";
+  comment?: string; // Added comment field for item-level comments
 }
 
 interface CartProps {
   items: CartItem[];
   onRemove: (productId: number) => void;
   onUpdateItem: (productId: number, field: string, value: any) => void;
-  onConfirm: (customerId: number) => void;
+  onConfirm: (customerId: number, orderDiscount: number, orderDiscountType: "fixed" | "percent", comments: Record<number, string>) => void;
   onSaveForLater: (customerId: number) => void;
   onCancel: () => void;
 }
@@ -34,10 +35,13 @@ const Cart: React.FC<CartProps> = ({
   const [orderDiscount, setOrderDiscount] = useState<number>(0);
   const [orderDiscountType, setOrderDiscountType] = useState<"fixed" | "percent">("fixed");
 
+  // For item comments, store by productId
+  const [itemComments, setItemComments] = useState<Record<number, string>>({});
+
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await customerAPI.getAllCustomers(); // call your API function
+        const response = await customerAPI.getAllCustomers();
         const data: Customer[] = response.data;
         setCustomers(data);
       } catch (error) {
@@ -136,6 +140,22 @@ const Cart: React.FC<CartProps> = ({
                     <option value="percent">%</option>
                   </select>
                 </div>
+
+                {/* Comment input */}
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    placeholder="Add a comment"
+                    value={itemComments[item.product.id] || ""}
+                    className="w-full px-2 py-1 rounded border dark:bg-gray-700 dark:text-white text-sm"
+                    onChange={(e) =>
+                      setItemComments((prev) => ({
+                        ...prev,
+                        [item.product.id]: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -196,7 +216,7 @@ const Cart: React.FC<CartProps> = ({
           <div className="flex gap-2 mt-3">
             <button
               className="flex-1 px-4 py-2 bg-green-500 text-white rounded"
-              onClick={() => selectedCustomer && onConfirm(selectedCustomer)}
+              onClick={() => selectedCustomer && onConfirm(selectedCustomer, orderDiscount, orderDiscountType, itemComments)}
               disabled={!selectedCustomer}
             >
               Confirm Order

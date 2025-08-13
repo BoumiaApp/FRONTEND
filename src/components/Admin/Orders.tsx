@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PageBreadcrumb from "../common/PageBreadCrumb";
 import ComponentCard from "../common/ComponentCard";
 import PageMeta from "../common/PageMeta";
-import ProductsTable from "../tables/ProductsTable";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
 import { productAPI } from "../../services/productApi";
@@ -76,7 +75,7 @@ export default function Orders() {
       setLoading(true);
       const response = await orderAPI.getAllOrders();
       console.log(response);
-      
+
       setOrders(response.data);
       setAllOrders(response.data);
     } catch (error) {
@@ -272,18 +271,21 @@ export default function Orders() {
     }
   };
 
-  const handleDeleteProduct = async (productId: number) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) {
+  const handleDeleteOrder = async (orderId: number) => {
+    if (!window.confirm("Are you sure you want to delete this order?")) {
       return;
     }
 
     try {
-      await productAPI.deleteProduct(productId);
-      setProducts(products.filter((product) => product.id !== productId));
-      setAllProducts(allProducts.filter((product) => product.id !== productId));
+      await orderAPI.deleteOrder(orderId);
+      setOrders(orders.filter((order) => order.id !== orderId));
+      setAllOrders(allOrders.filter((order) => order.id !== orderId));
     } catch (error) {
-      console.error("Error deleting product:", error);
-      setError("Failed to delete product");
+      console.error("Error deleting order:", error);
+
+      setError(
+        `Failed to delete order : ${error.response?.data || "Unknown error"}`
+      );
     }
   };
 
@@ -500,7 +502,7 @@ export default function Orders() {
           <OrdersTable
             orders={orders}
             loading={loading}
-            onDeleteProduct={handleDeleteProduct}
+            onDeleteOrder={handleDeleteOrder}
             onToggleProductStatus={handleToggleProductStatus}
             onUpdateProduct={handleUpdateProduct}
           />

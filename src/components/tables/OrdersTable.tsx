@@ -19,7 +19,7 @@ import { BoxIcon } from "../../icons";
 interface OrdersTableProps {
   orders: PosOrder[];
   loading: boolean;
-  onDeleteProduct: (productId: number) => Promise<void>;
+  onDeleteOrder: (productId: number) => Promise<void>;
   onToggleProductStatus: (
     productId: number,
     currentStatus: boolean
@@ -30,7 +30,7 @@ interface OrdersTableProps {
 export default function OrdersTable({
   orders,
   loading,
-  onDeleteProduct,
+  onDeleteOrder,
   onToggleProductStatus,
   onUpdateProduct,
 }: OrdersTableProps) {
@@ -330,7 +330,7 @@ export default function OrdersTable({
                         size="sm"
                         aria-label="Delete order"
                         className="flex items-center gap-1 text-red-500 hover:text-red-700"
-                        // onClick={() => handleDeleteOrder(order.id)}
+                        onClick={() => onDeleteOrder(order.id)}
                       >
                         <Trash2 className="size-4" />
                         Delete

@@ -31,7 +31,7 @@ export interface Customer {
     quantity: number;    // or string if you want to handle decimals as strings
     price: number;
     discount: number;
-    discountType: number;  // 0 = fixed, 1 = percentage
+    discountType: 0 | 1;  // 0 = fixed, 1 = percentage
     comment: string | null;
     locked?: boolean | null;  // optional, because your example shows null
   }
@@ -49,5 +49,24 @@ export interface Customer {
     dateUpdated: string;
     customer: Customer;
     items: PosOrderItem[];
+  }
+  
+  /// Order creation API Payloads
+  export interface OrderItem {
+    productId: number;
+    quantity: number;
+    price: number;
+    discount: number;
+    discountType: 0 | 1; // 0 = fixed, 1 = percent
+    comment?: string;
+  }
+  
+  export interface CreateOrderPayload {
+    customerId: number;
+    userId: number;
+    discount: number;
+    discountType: 0 | 1; // 0 = fixed, 1 = percent
+    status: "PENDING" | "DONE" | string;
+    items: OrderItem[];
   }
   
