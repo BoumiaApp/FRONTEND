@@ -121,7 +121,7 @@ export default function WarehouseTable({
                   </TableCell>
                 </TableRow>
               ) : (
-                warehouses.map((warehouse, index) => (
+                warehouses.map((warehouse) => (
                   <TableRow
                     key={warehouse.id}
                     className="hover:bg-gray-50 dark:hover:bg-white/[0.03] transition-colors"

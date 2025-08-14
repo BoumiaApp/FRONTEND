@@ -10,7 +10,7 @@ import {
 import Badge from "../ui/badge/Badge";
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
-import { Customer, UpdateCustomerRequest, CUSTOMER_TYPE_LABELS } from "../../types/customer";
+import { Customer, UpdateCustomerRequest } from "../../types/customer";
 import { customerAPI } from "../../services/customerApi";
 
 interface CustomersTableProps {
@@ -23,7 +23,6 @@ interface CustomersTableProps {
 export default function CustomersTable({ customers, loading, onDeleteCustomer, onToggleCustomerStatus }: CustomersTableProps) {
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
   const [editFormData, setEditFormData] = useState<UpdateCustomerRequest>({
-    code: '',
     name: '',
     taxNumber: '',
     email: '',
@@ -45,7 +44,6 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
   const handleEditCustomer = (customer: Customer) => {
     setEditingCustomer(customer);
     setEditFormData({
-      code: customer.code,
       name: customer.name,
       taxNumber: customer.taxNumber || '',
       email: customer.email || '',
@@ -76,7 +74,7 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
       // Refresh the page to show updated data
       window.location.reload();
     } catch (err: any) {
-      setEditError(err.response?.data?.message || 'Failed to update customer');
+      setEditError(err.response?.data || 'Failed to update customer');
     } finally {
       setEditLoading(false);
     }
@@ -164,9 +162,9 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
                             {customer.email}
                           </a>
                         )}
-                        {customer.phone && (
-                          <a href={`tel:${customer.phone}`} className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                            {customer.phone}
+                        {customer.phoneNumber && (
+                          <a href={`tel:${customer.phoneNumber}`} className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            {customer.phoneNumber}
                           </a>
                         )}
                       </div>
@@ -281,17 +279,8 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
             )}
             
             <form onSubmit={handleUpdateCustomer} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Code *</label>
-                  <input
-                    type="text"
-                    value={editFormData.code}
-                    onChange={(e) => setEditFormData({...editFormData, code: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                    required
-                  />
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+        
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>

@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import PageBreadcrumb from "../common/PageBreadCrumb";
 import ComponentCard from "../common/ComponentCard";
 import PageMeta from "../common/PageMeta";
-import ProductsTable from "../tables/ProductsTable";
 import Button from "../ui/button/Button";
 import { BoxIcon } from "../../icons";
-import { productAPI } from "../../services/productApi";
 import { productGroupAPI } from "../../services/productGroupApi";
 import {
-  Product,
   CreateProductRequest,
   MEASUREMENT_UNITS,
   PRODUCT_COLORS,
@@ -17,6 +14,7 @@ import { ProductGroup } from "../../types/productGroup";
 import { orderAPI } from "../../services/orderApi";
 import { PosOrder } from "../../types/order";
 import OrdersTable from "../tables/OrdersTable";
+import { AxiosError } from "axios";
 
 export default function Orders() {
   const [orders, setOrders] = useState<PosOrder[]>([]);
@@ -55,7 +53,7 @@ export default function Orders() {
     barcode: "",
     quantity: 0,
   });
-  const [createLoading, setCreateLoading] = useState(false);
+  // const [createLoading, setCreateLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -65,7 +63,7 @@ export default function Orders() {
 
   useEffect(() => {
     if (searchTerm) {
-      handleSearch();
+      //handleSearch();
     } else {
       setOrders(allOrders);
     }
@@ -76,7 +74,7 @@ export default function Orders() {
       setLoading(true);
       const response = await orderAPI.getAllOrders();
       console.log(response);
-      
+
       setOrders(response.data);
       setAllOrders(response.data);
     } catch (error) {
@@ -96,228 +94,230 @@ export default function Orders() {
     }
   };
 
-  const handleSearch = async () => {
-    if (!searchTerm.trim()) {
-      setProducts(allProducts);
+  // const handleSearch = async () => {
+  //   if (!searchTerm.trim()) {
+  //     setProducts(allProducts);
+  //     return;
+  //   }
+
+  //   try {
+  //     setLoading(true);
+  //     let response;
+
+  //     switch (searchType) {
+  //       case "code":
+  //         response = await productAPI.getProductByCode(searchTerm);
+  //         setProducts([response.data]);
+  //         break;
+  //       case "plu":
+  //         response = await productAPI.getProductByPLU(searchTerm);
+  //         setProducts([response.data]);
+  //         break;
+  //       case "name":
+  //         response = await productAPI.getProductByName(searchTerm);
+  //         setProducts([response.data]);
+  //         break;
+  //       case "barcode":
+  //         response = await productAPI.getProductByBarcode(searchTerm);
+  //         setProducts([response.data]);
+  //         break;
+  //       default:
+  //         response = await productAPI.searchProductsGeneral(searchTerm);
+  //         setProducts(response.data);
+  //         break;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error searching products:", error);
+  //     setProducts([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // const applyFilter = async () => {
+  //   try {
+  //     setLoading(true);
+  //     let response;
+
+  //     switch (filterType) {
+  //       case "enabled":
+  //         response = await productAPI.getEnabledProducts();
+  //         break;
+  //       case "disabled":
+  //         response = await productAPI.getDisabledProducts();
+  //         break;
+  //       case "services":
+  //         response = await productAPI.getServiceProducts();
+  //         break;
+  //       case "non-services":
+  //         response = await productAPI.getNonServiceProducts();
+  //         break;
+  //       case "price-change-allowed":
+  //         response = await productAPI.getPriceChangeAllowedProducts();
+  //         break;
+  //       case "tax-inclusive":
+  //         response = await productAPI.getTaxInclusiveProducts();
+  //         break;
+  //       case "default-quantity":
+  //         response = await productAPI.getDefaultQuantityProducts();
+  //         break;
+  //       case "by-group":
+  //         if (selectedGroup) {
+  //           response = await productAPI.getProductsByGroup(selectedGroup);
+  //         } else {
+  //           response = await productAPI.getAllProducts();
+  //         }
+  //         break;
+  //       case "by-unit":
+  //         if (selectedUnit) {
+  //           response = await productAPI.getProductsByMeasurementUnit(
+  //             selectedUnit
+  //           );
+  //         } else {
+  //           response = await productAPI.getAllProducts();
+  //         }
+  //         break;
+  //       case "by-color":
+  //         if (selectedColor) {
+  //           response = await productAPI.getProductsByColor(selectedColor);
+  //         } else {
+  //           response = await productAPI.getAllProducts();
+  //         }
+  //         break;
+  //       case "by-age-restriction":
+  //         if (rankRange.min && rankRange.max) {
+  //           response = await productAPI.getProductsByRankRange(
+  //             parseInt(rankRange.min),
+  //             parseInt(rankRange.max)
+  //           );
+  //         } else {
+  //           response = await productAPI.getAllProducts();
+  //         }
+  //         break;
+  //       case "by-price-range":
+  //         if (priceRange.min && priceRange.max) {
+  //           response = await productAPI.getProductsByPriceRange(
+  //             parseFloat(priceRange.min),
+  //             parseFloat(priceRange.max)
+  //           );
+  //         } else {
+  //           response = await productAPI.getAllProducts();
+  //         }
+  //         break;
+  //       case "by-cost-range":
+  //         if (costRange.min && costRange.max) {
+  //           response = await productAPI.getProductsByCostRange(
+  //             parseFloat(costRange.min),
+  //             parseFloat(costRange.max)
+  //           );
+  //         } else {
+  //           response = await productAPI.getAllProducts();
+  //         }
+  //         break;
+  //       default:
+  //         response = await productAPI.getAllProducts();
+  //         break;
+  //     }
+
+  //     setProducts(response.data);
+  //   } catch (error) {
+  //     console.error("Error applying filter:", error);
+  //     setError("Failed to apply filter");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // const handleCreateProduct = async () => {
+  //   if (!createFormData.name) {
+  //     setError("Name is required field");
+  //     return;
+  //   }
+
+  //   try {
+  //     setCreateLoading(true);
+  //     setError("");
+
+  //     const response = await productAPI.createProduct(createFormData);
+  //     setProducts([...products, response.data]);
+  //     setAllProducts([...allProducts, response.data]);
+  //     setShowCreateModal(false);
+  //     setCreateFormData({
+  //       code: "",
+  //       plu: "",
+  //       name: "",
+  //       description: "",
+  //       productGroupId: undefined,
+  //       measurementUnit: "",
+  //       price: 0,
+  //       cost: 0,
+  //       isEnabled: true,
+  //       isService: false,
+  //       isPriceChangeAllowed: true,
+  //       isTaxInclusive: false,
+  //       usesDefaultQuantity: false,
+  //       color: "",
+  //       ageRestriction: undefined,
+  //       rank: 0,
+  //       barcode: "",
+  //       quantity: 0,
+  //     });
+  //   } catch (error: any) {
+  //     console.error("Error creating product:", error);
+  //     setError(error.response?.data?.message || "Failed to create product");
+  //   } finally {
+  //     setCreateLoading(false);
+  //   }
+  // };
+
+  const handleDeleteOrder = async (orderId: number) => {
+    if (!window.confirm("Are you sure you want to delete this order?")) {
       return;
     }
 
     try {
-      setLoading(true);
-      let response;
-
-      switch (searchType) {
-        case "code":
-          response = await productAPI.getProductByCode(searchTerm);
-          setProducts([response.data]);
-          break;
-        case "plu":
-          response = await productAPI.getProductByPLU(searchTerm);
-          setProducts([response.data]);
-          break;
-        case "name":
-          response = await productAPI.getProductByName(searchTerm);
-          setProducts([response.data]);
-          break;
-        case "barcode":
-          response = await productAPI.getProductByBarcode(searchTerm);
-          setProducts([response.data]);
-          break;
-        default:
-          response = await productAPI.searchProductsGeneral(searchTerm);
-          setProducts(response.data);
-          break;
-      }
+      await orderAPI.deleteOrder(orderId);
+      setOrders(orders.filter((order) => order.id !== orderId));
+      setAllOrders(allOrders.filter((order) => order.id !== orderId));
     } catch (error) {
-      console.error("Error searching products:", error);
-      setProducts([]);
-    } finally {
-      setLoading(false);
+      console.error("Error deleting order:", error);
+      const axiosError = error as AxiosError<{ message?: string }>;
+      setError(`Failed to delete order: ${axiosError.response?.data?.message || axiosError.message || "Unknown error"}`);
+   
     }
   };
 
-  const applyFilter = async () => {
-    try {
-      setLoading(true);
-      let response;
+  // const handleToggleProductStatus = async (
+  //   productId: number,
+  //   currentStatus: boolean
+  // ) => {
+  //   try {
+  //     if (currentStatus) {
+  //       await productAPI.disableProduct(productId);
+  //     } else {
+  //       await productAPI.enableProduct(productId);
+  //     }
 
-      switch (filterType) {
-        case "enabled":
-          response = await productAPI.getEnabledProducts();
-          break;
-        case "disabled":
-          response = await productAPI.getDisabledProducts();
-          break;
-        case "services":
-          response = await productAPI.getServiceProducts();
-          break;
-        case "non-services":
-          response = await productAPI.getNonServiceProducts();
-          break;
-        case "price-change-allowed":
-          response = await productAPI.getPriceChangeAllowedProducts();
-          break;
-        case "tax-inclusive":
-          response = await productAPI.getTaxInclusiveProducts();
-          break;
-        case "default-quantity":
-          response = await productAPI.getDefaultQuantityProducts();
-          break;
-        case "by-group":
-          if (selectedGroup) {
-            response = await productAPI.getProductsByGroup(selectedGroup);
-          } else {
-            response = await productAPI.getAllProducts();
-          }
-          break;
-        case "by-unit":
-          if (selectedUnit) {
-            response = await productAPI.getProductsByMeasurementUnit(
-              selectedUnit
-            );
-          } else {
-            response = await productAPI.getAllProducts();
-          }
-          break;
-        case "by-color":
-          if (selectedColor) {
-            response = await productAPI.getProductsByColor(selectedColor);
-          } else {
-            response = await productAPI.getAllProducts();
-          }
-          break;
-        case "by-age-restriction":
-          if (rankRange.min && rankRange.max) {
-            response = await productAPI.getProductsByRankRange(
-              parseInt(rankRange.min),
-              parseInt(rankRange.max)
-            );
-          } else {
-            response = await productAPI.getAllProducts();
-          }
-          break;
-        case "by-price-range":
-          if (priceRange.min && priceRange.max) {
-            response = await productAPI.getProductsByPriceRange(
-              parseFloat(priceRange.min),
-              parseFloat(priceRange.max)
-            );
-          } else {
-            response = await productAPI.getAllProducts();
-          }
-          break;
-        case "by-cost-range":
-          if (costRange.min && costRange.max) {
-            response = await productAPI.getProductsByCostRange(
-              parseFloat(costRange.min),
-              parseFloat(costRange.max)
-            );
-          } else {
-            response = await productAPI.getAllProducts();
-          }
-          break;
-        default:
-          response = await productAPI.getAllProducts();
-          break;
-      }
+  //     const updatedProducts = products.map((product) =>
+  //       product.id === productId
+  //         ? { ...product, isEnabled: !currentStatus }
+  //         : product
+  //     );
+  //     setProducts(updatedProducts);
+  //     setAllProducts(updatedProducts);
+  //   } catch (error) {
+  //     console.error("Error toggling product status:", error);
+  //     setError("Failed to update product status");
+  //   }
+  // };
 
-      setProducts(response.data);
-    } catch (error) {
-      console.error("Error applying filter:", error);
-      setError("Failed to apply filter");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleCreateProduct = async () => {
-    if (!createFormData.name) {
-      setError("Name is required field");
-      return;
-    }
-
-    try {
-      setCreateLoading(true);
-      setError("");
-
-      const response = await productAPI.createProduct(createFormData);
-      setProducts([...products, response.data]);
-      setAllProducts([...allProducts, response.data]);
-      setShowCreateModal(false);
-      setCreateFormData({
-        code: "",
-        plu: "",
-        name: "",
-        description: "",
-        productGroupId: undefined,
-        measurementUnit: "",
-        price: 0,
-        cost: 0,
-        isEnabled: true,
-        isService: false,
-        isPriceChangeAllowed: true,
-        isTaxInclusive: false,
-        usesDefaultQuantity: false,
-        color: "",
-        ageRestriction: undefined,
-        rank: 0,
-        barcode: "",
-        quantity: 0,
-      });
-    } catch (error: any) {
-      console.error("Error creating product:", error);
-      setError(error.response?.data?.message || "Failed to create product");
-    } finally {
-      setCreateLoading(false);
-    }
-  };
-
-  const handleDeleteProduct = async (productId: number) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) {
-      return;
-    }
-
-    try {
-      await productAPI.deleteProduct(productId);
-      setProducts(products.filter((product) => product.id !== productId));
-      setAllProducts(allProducts.filter((product) => product.id !== productId));
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      setError("Failed to delete product");
-    }
-  };
-
-  const handleToggleProductStatus = async (
-    productId: number,
-    currentStatus: boolean
-  ) => {
-    try {
-      if (currentStatus) {
-        await productAPI.disableProduct(productId);
-      } else {
-        await productAPI.enableProduct(productId);
-      }
-
-      const updatedProducts = products.map((product) =>
-        product.id === productId
-          ? { ...product, isEnabled: !currentStatus }
-          : product
-      );
-      setProducts(updatedProducts);
-      setAllProducts(updatedProducts);
-    } catch (error) {
-      console.error("Error toggling product status:", error);
-      setError("Failed to update product status");
-    }
-  };
-
-  const handleUpdateProduct = (productId: number, updatedProduct: Product) => {
-    const updatedProducts = products.map((product) =>
-      product.id === productId ? updatedProduct : product
-    );
-    setProducts(updatedProducts);
-    setAllProducts(updatedProducts);
-  };
+  // const handleUpdateProduct = (productId: number, updatedProduct: Product) => {
+  //   const updatedProducts = products.map((product) =>
+  //     product.id === productId ? updatedProduct : product
+  //   );
+  //   setProducts(updatedProducts);
+  //   setAllProducts(updatedProducts);
+  // };
 
   return (
     <>
@@ -474,7 +474,7 @@ export default function Orders() {
             <Button
               size="sm"
               variant="outline"
-              onClick={applyFilter}
+              // onClick={applyFilter}
               className="flex items-center gap-1"
             >
               <BoxIcon className="size-4" />
@@ -500,9 +500,9 @@ export default function Orders() {
           <OrdersTable
             orders={orders}
             loading={loading}
-            onDeleteProduct={handleDeleteProduct}
-            onToggleProductStatus={handleToggleProductStatus}
-            onUpdateProduct={handleUpdateProduct}
+            onDeleteOrder={handleDeleteOrder}
+            // onToggleProductStatus={handleToggleProductStatus}
+            // onUpdateProduct={handleUpdateProduct}
           />
         </ComponentCard>
       </div>
@@ -810,16 +810,16 @@ export default function Orders() {
               <Button
                 variant="outline"
                 onClick={() => setShowCreateModal(false)}
-                disabled={createLoading}
+                // disabled={createLoading}
               >
                 Cancel
               </Button>
               <Button
                 variant="primary"
-                onClick={handleCreateProduct}
-                disabled={createLoading}
+                // onClick={handleCreateProduct}
+                // disabled={createLoading}
               >
-                {createLoading ? "Creating..." : "Create Product"}
+               Create {/* {createLoading ? "Creating..." : "Create Product"} */}
               </Button>
             </div>
           </div>

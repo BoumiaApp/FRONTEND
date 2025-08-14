@@ -20,6 +20,7 @@ export interface Product {
   createdAt?: string;
   updatedAt?: string;
   quantity?: number; // Optional for stock management
+  barcode?: string; // Optional for barcode scanning
 }
 
 export interface CreateProductRequest {
