@@ -139,7 +139,7 @@ export default function NewSale() {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         {/* Left Side */}
         <div className="space-y-6">
-          <BarcodeInput setProducts={setProducts} />
+          <BarcodeInput products={products} setProducts={setProducts} handleAddToCart={handleAddToCart} />
 
           {/* Product Cards Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

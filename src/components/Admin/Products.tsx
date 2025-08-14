@@ -261,7 +261,9 @@ export default function Products() {
       });
     } catch (error: any) {
       console.error("Error creating product:", error);
-      setError(error.response?.data?.message || "Failed to create product");
+      console.log("Error response:", error.response.data);
+      
+      setError(error.response.data|| "Failed to create product");
     } finally {
       setCreateLoading(false);
     }

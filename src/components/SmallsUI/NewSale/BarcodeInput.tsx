@@ -1,70 +1,83 @@
 import { useState, useEffect } from "react";
-import Label from "../../form/Label";
 import Input from "../../form/input/InputField";
 import ComponentCard from "../../common/ComponentCard";
 import { productAPI } from "../../../services/productApi";
 import { Product } from "../../../types/product";
+import { useDebounce } from "../../../hooks/useDebounce"; // adjust path
 
 export default function BarcodeInput({
+  products,
   setProducts,
+  handleAddToCart,
 }: {
+  products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<any[]>>;
+  handleAddToCart: (product: Product | Product[]) => void;
 }) {
   const [searchItem, setSearchItem] = useState("");
   const [error, setError] = useState(false);
 
-  // Fetch all products on component mount
+  const debouncedSearchItem = useDebounce(searchItem, 400); // 400ms debounce
+
+  // Fetch all products on mount
   useEffect(() => {
     const fetchAllProducts = async () => {
       try {
         const response = (await productAPI.getAllProducts()).data;
-        setProducts(response.splice(0, 12)); // Limit to first 10 products
+        setProducts(response.slice(0, 12));
       } catch (err) {
         console.error("Failed to fetch products:", err);
         setError(true);
       }
     };
-
     fetchAllProducts();
   }, []);
 
-  const handleSearchItemChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value;
-    setSearchItem(value);
+  // Trigger search only when debouncedSearchItem changes
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        let result: Product[] = [];
 
-    let response: Product[] = [];
-    if (value === "") {
-      response = (await productAPI.getAllProducts()).data;
-      setProducts(response.splice(0, 12)); // Limit to first 10 products
-    } else {
-      response = (await productAPI.searchProductsGeneral(value)).data;
-      console.log(response);
-      if (response.length <= 0) {
+        if (debouncedSearchItem === "") {
+          result = (await productAPI.getAllProducts()).data;
+        } else {
+          result = (await productAPI.searchProductsGeneral(debouncedSearchItem)).data;
+          setError(result.length <= 0);
+        }
+
+        setProducts(result.slice(0, 12));
+      } catch (err) {
+        console.error("Error fetching products:", err);
         setError(true);
-      } else {
-        setError(false);
       }
-      setProducts(response.splice(0, 12)); // Limit to first 10 products  
+    };
+
+    fetchProducts();
+  }, [debouncedSearchItem]);
+
+  // Handles pressing Enter
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && products.length === 1) {
+      handleAddToCart(products[0]);
+      setSearchItem("");
+      setProducts([]);
     }
   };
 
   return (
-    <ComponentCard
-      title="Search Products"
-    >
+    <ComponentCard title="Search Products">
       <div className="space-y-5 sm:space-y-6">
-        {/* Error Input */}
         <div>
           <Input
             type="text"
             value={searchItem}
             error={error}
             success={!error}
-            onChange={handleSearchItemChange}
+            onChange={(e) => setSearchItem(e.target.value)}
             placeholder="Enter your Query"
             hint={error ? "There is no product with this search value" : ""}
+            onKeyDown={handleSearchKeyDown}
           />
         </div>
       </div>
