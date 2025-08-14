@@ -107,7 +107,7 @@ export const generateReceipt = (order: PosOrder): string => {
   });
   
   // Totals
-  receipt += ALIGN_RIGHT + BOLD_ON;
+  receipt +=  thermalCommands.ALIGN_RIGHT + BOLD_ON;
   receipt += `Subtotal: ${formatMoney(order.total + (order.discount || 0))}\n`;
   
   if (order.discount && order.discount > 0) {

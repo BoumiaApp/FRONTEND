@@ -88,7 +88,7 @@ export default function NewSale() {
   
     try {
       console.log("Sending order payload:", orderPayload);
-      let response = await orderAPI.createOrder(orderPayload);
+      await orderAPI.createOrder(orderPayload);
       alert("Order confirmed!");
       setCart([]);
     } catch (error: any) {

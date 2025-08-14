@@ -1,7 +1,6 @@
 import PageBreadcrumb from "../../components/common/PageBreadCrumb";
 import ComponentCard from "../../components/common/ComponentCard";
 import PageMeta from "../../components/common/PageMeta";
-import BasicTableOne from "../../components/tables/UsersTable";
 
 export default function BasicTables() {
   return (
@@ -13,7 +12,11 @@ export default function BasicTables() {
       <PageBreadcrumb pageTitle="Basic Tables" />
       <div className="space-y-6">
         <ComponentCard title="Basic Table 1">
-          <BasicTableOne />
+          <p>
+            This is a basic table example. You can use it to display simple
+            data in a tabular format. You can customize it further by adding
+            more features like sorting, filtering, and pagination.  </p>
+          {/* <BasicTableOne /> */}
         </ComponentCard>
       </div>
     </>

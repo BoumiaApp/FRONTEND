@@ -1,5 +1,4 @@
-import React from "react";
-import { Link, useLocation } from "react-router";
+import {  useLocation } from "react-router";
 import { useAuth } from "../context/AuthContext";
 
 import { GridIcon, UserCircleIcon, BoxIcon } from "../icons";

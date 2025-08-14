@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState } from "react";
 import { Pencil, Printer, Eye, Trash2 } from "lucide-react";
 
 import {
@@ -12,7 +12,6 @@ import Badge from "../ui/badge/Badge";
 import Button from "../ui/button/Button";
 import { Product, UpdateProductRequest } from "../../types/product";
 
-import { ProductGroup } from "../../types/productGroup";
 import { PosOrder } from "../../types/order";
 import { BoxIcon } from "../../icons";
 import { useThermalPrinter } from "../../hooks/useThermalPrinter";
@@ -21,19 +20,18 @@ interface OrdersTableProps {
   orders: PosOrder[];
   loading: boolean;
   onDeleteOrder: (productId: number) => Promise<void>;
-  onToggleProductStatus: (
-    productId: number,
-    currentStatus: boolean
-  ) => Promise<void>;
-  onUpdateProduct: (productId: number, updatedProduct: Product) => void;
+  // onToggleProductStatus: (
+  //   productId: number,
+  //   currentStatus: boolean
+  // ) => Promise<void>;
+  // onUpdateProduct: (productId: number, updatedProduct: Product) => void;
 }
 
 export default function OrdersTable({
   orders,
   loading,
   onDeleteOrder,
-  onToggleProductStatus,
-  onUpdateProduct,
+
 }: OrdersTableProps) {
   // Inside your component
   const { printer, connect, print, isSupported } = useThermalPrinter();
@@ -74,9 +72,9 @@ export default function OrdersTable({
     rank: 0,
     quantity: 0, // Optional for stock management
   });
-  const [editLoading, setEditLoading] = useState(false);
-  const [editError, setEditError] = useState("");
-  const [productGroups, setProductGroups] = useState<ProductGroup[]>([]);
+  // const [editLoading, setEditLoading] = useState(false);
+  // const [editError, setEditError] = useState("d");
+  // const [productGroups, setProductGroups] = useState<ProductGroup[]>([]);
 
   const handleViewDetails = (order: PosOrder) => {
     setSelectedOrder(order);
@@ -462,7 +460,7 @@ export default function OrdersTable({
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Product Group
                 </label>
@@ -485,7 +483,7 @@ export default function OrdersTable({
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -655,26 +653,27 @@ export default function OrdersTable({
               </div>
             </div>
 
-            {editError && (
+            {/* {editError && (
               <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
                 {editError}
               </div>
-            )}
+            )} */}
 
             <div className="flex justify-end gap-3 mt-6">
               <Button
                 variant="outline"
                 onClick={() => setEditingProduct(null)}
-                disabled={editLoading}
+                // disabled={editLoading}
               >
                 Cancel
               </Button>
               <Button
                 variant="primary"
-                onClick={handleUpdateProduct}
-                disabled={editLoading}
+                // onClick={handleUpdateProduct}
+                // disabled={editLoading}
               >
-                {editLoading ? "Updating..." : "Update Product"}
+                Edit
+                {/* {editLoading ? "Updating..." : "Update Product"} */}
               </Button>
             </div>
           </div>
@@ -1039,9 +1038,9 @@ export default function OrdersTable({
                 variant="primary"
                 className="flex items-center gap-1"
                 onClick={() => {
-                  // Print A4 version
-                  const printContent =
-                    document.getElementById("printable-ticket")?.innerHTML;
+                  // // Print A4 version
+                  // const printContent =
+                  //   document.getElementById("printable-ticket")?.innerHTML;
                   const printWindow = window.open("", "_blank");
                   printWindow?.document.write(`
       <!DOCTYPE html>
@@ -1265,7 +1264,7 @@ export default function OrdersTable({
             </thead>
             <tbody>
               ${selectedOrder.items
-                ?.map((item, index) => {
+                ?.map((item) => {
                   const itemTotal = item.price * item.quantity;
                   const itemDiscount =
                     item.discountType === 0

@@ -9,12 +9,10 @@ import { customerAPI } from "../../services/customerApi";
 import {
   Customer,
   CreateCustomerRequest,
-  CUSTOMER_TYPE_LABELS,
 } from "../../types/customer";
 
 export default function Clients() {
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [allCustomers, setAllCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchType, setSearchType] = useState<"general" | "name" | "contact">(
@@ -49,7 +47,6 @@ export default function Clients() {
       setError(null);
       const response = await customerAPI.getAllCustomers();
       const fetchedCustomers = response.data || [];
-      setAllCustomers(fetchedCustomers);
       setCustomers(fetchedCustomers);
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to fetch customers");
@@ -534,11 +531,11 @@ export default function Clients() {
                   </label>
                   <input
                     type="text"
-                    value={createFormData.citySubdivision}
+                    value={createFormData.citySubdivisionName}
                     onChange={(e) =>
                       setCreateFormData({
                         ...createFormData,
-                        citySubdivision: e.target.value,
+                        citySubdivisionName: e.target.value,
                       })
                     }
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"

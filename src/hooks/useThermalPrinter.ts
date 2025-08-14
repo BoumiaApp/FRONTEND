@@ -1,4 +1,3 @@
-// hooks/useThermalPrinter.ts
 import { useState, useEffect } from 'react';
 
 import { PrinterDevice, ThermalPrinterHook } from '../types/printer';

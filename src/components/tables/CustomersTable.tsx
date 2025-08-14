@@ -10,7 +10,7 @@ import {
 import Badge from "../ui/badge/Badge";
 import { BoxIcon } from "../../icons";
 import Button from "../ui/button/Button";
-import { Customer, UpdateCustomerRequest, CUSTOMER_TYPE_LABELS } from "../../types/customer";
+import { Customer, UpdateCustomerRequest } from "../../types/customer";
 import { customerAPI } from "../../services/customerApi";
 
 interface CustomersTableProps {
@@ -162,9 +162,9 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
                             {customer.email}
                           </a>
                         )}
-                        {customer.phone && (
-                          <a href={`tel:${customer.phone}`} className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                            {customer.phone}
+                        {customer.phoneNumber && (
+                          <a href={`tel:${customer.phoneNumber}`} className="block hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            {customer.phoneNumber}
                           </a>
                         )}
                       </div>
