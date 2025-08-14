@@ -12,7 +12,7 @@ export default function BarcodeInput({
 }: {
   products: Product[];
   setProducts: React.Dispatch<React.SetStateAction<any[]>>;
-  handleAddToCart: (product: Product | Product[]) => void;
+  handleAddToCart: (product: Product ) => void;
 }) {
   const [searchItem, setSearchItem] = useState("");
   const [error, setError] = useState(false);

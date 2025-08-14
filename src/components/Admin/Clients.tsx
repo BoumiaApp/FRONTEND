@@ -165,7 +165,7 @@ export default function Clients() {
       // Refresh customers list
       fetchCustomers();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to create customer");
+      setError(err.response?.data || "Failed to create customer");
       console.error("Create customer error:", err);
     } finally {
       setCreateLoading(false);

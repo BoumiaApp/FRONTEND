@@ -76,7 +76,7 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
       // Refresh the page to show updated data
       window.location.reload();
     } catch (err: any) {
-      setEditError(err.response?.data?.message || 'Failed to update customer');
+      setEditError(err.response?.data || 'Failed to update customer');
     } finally {
       setEditLoading(false);
     }
