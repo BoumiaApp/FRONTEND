@@ -28,6 +28,7 @@ export interface Customer {
   export interface PosOrderItem {
     id: number;
     productId: number;
+    productName: string;
     quantity: number;    // or string if you want to handle decimals as strings
     price: number;
     discount: number;

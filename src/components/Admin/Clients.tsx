@@ -25,7 +25,6 @@ export default function Clients() {
   >("all");
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createFormData, setCreateFormData] = useState<CreateCustomerRequest>({
-    code: "",
     name: "",
     taxNumber: "",
     email: "",
@@ -144,7 +143,6 @@ export default function Clients() {
 
       // Reset form and close modal
       setCreateFormData({
-        code: "",
         name: "",
         taxNumber: "",
         email: "",
@@ -349,28 +347,7 @@ export default function Clients() {
               </div>
             )}
             <form onSubmit={handleCreateCustomer} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Code
-                  </label>
-                  <input
-                    type="text"
-                    value={createFormData.code}
-                    onChange={(e) =>
-                      setCreateFormData({
-                        ...createFormData,
-                        code: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                    placeholder="Leave empty for auto-generation"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                    Leave empty to auto-generate from 1
-                  </p>
-                </div>
-
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Name *

@@ -20,7 +20,6 @@ export interface Customer {
 }
 
 export interface CreateCustomerRequest {
-  code?: string; // Made optional - will auto-generate if not provided
   name: string;
   taxNumber?: string;
   email?: string;
@@ -38,7 +37,6 @@ export interface CreateCustomerRequest {
 }
 
 export interface UpdateCustomerRequest {
-  code?: string;
   name?: string;
   taxNumber?: string;
   email?: string;

@@ -23,7 +23,6 @@ interface CustomersTableProps {
 export default function CustomersTable({ customers, loading, onDeleteCustomer, onToggleCustomerStatus }: CustomersTableProps) {
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
   const [editFormData, setEditFormData] = useState<UpdateCustomerRequest>({
-    code: '',
     name: '',
     taxNumber: '',
     email: '',
@@ -45,7 +44,6 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
   const handleEditCustomer = (customer: Customer) => {
     setEditingCustomer(customer);
     setEditFormData({
-      code: customer.code,
       name: customer.name,
       taxNumber: customer.taxNumber || '',
       email: customer.email || '',
@@ -281,17 +279,8 @@ export default function CustomersTable({ customers, loading, onDeleteCustomer, o
             )}
             
             <form onSubmit={handleUpdateCustomer} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Code *</label>
-                  <input
-                    type="text"
-                    value={editFormData.code}
-                    onChange={(e) => setEditFormData({...editFormData, code: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400 bg-white"
-                    required
-                  />
-                </div>
+              <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
+        
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name *</label>
